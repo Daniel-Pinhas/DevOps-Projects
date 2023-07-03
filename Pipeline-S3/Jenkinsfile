@@ -12,7 +12,7 @@ pipeline {
 
         stage('Packaging') {
             steps {
-                sh 'tar -cvzf DevOps-Projects.tar.gz Sela-Projects'
+                sh 'tar -cvzf DevOps-Projects.tar.gz DevOps-Projects'
             }
         }
 
@@ -47,7 +47,7 @@ pipeline {
         stage('Deploy Ansible on Test-Servers') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
-                    sh 'tar -xvzf Sela-Projects.tar.gz'
+                    sh 'tar -xvzf DevOps-Projects.tar.gz'
                     sh 'sudo apt update -y'
                     sh 'sudo apt install ansible -y'
                     sh 'sudo apt install python3-pip -y'
