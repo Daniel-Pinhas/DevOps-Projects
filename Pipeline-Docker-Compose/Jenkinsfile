@@ -39,8 +39,8 @@ pipeline {
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo rm -rf Pipeline-Docker-Compose
-                        sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
-                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && cd Pipeline-Docker-Compose && sudo docker-compose down || (${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up)
+                        sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:/home/ec2-user
+                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && cd Pipeline-Docker-Compose && sudo docker-compose down || ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
                     """
                 }
             }
