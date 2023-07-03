@@ -5,100 +5,76 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask'
         dockerHubUsername = 'danielpinhas'
+        IPtest = '18.221.53.201'
+        IPprod = '3.137.162.209'
     }
 
     stages {
         stage('Clean Up & Clone') {
             steps {
                 sh 'sudo rm -rf *'
-                sh 'git clone https://github.com/Daniel-Pinhas/Sela-Projects2.git'
+                sh 'git clone https://github.com/Daniel-Pinhas/DevOps-Projects.git'
+                echo 'Clean Up & Clone Stage Completed'
             }
         }
 
         stage('Build and Push Docker Image') {
             steps {
-                dir('Sela-Projects2/Flask-Project') {
+                dir('DevOps-Projects/Pipeline-Docker-Compose/Flask-Project/') {
                     sh '''
-                    #!/bin/bash
-
-                    dockerHubUsername="danielpinhas"
-                    repositoryName="flask"
-
-                    # Check if the Docker image with the specific var=tag exists
-                    if tag=$(docker images "${dockerHubUsername}/${repositoryName}" | awk '$1 == "'"${dockerHubUsername}/${repositoryName}"'" { print $2 }'); then
-                        float_tag=$(echo "${tag}" | awk '{ printf "%.2f", $0 }')
-                        raisedTag=$(echo "${float_tag} + 0.1" | bc)
-                        newTag=$(echo "${raisedTag}" | awk '{ printf "%.2f", $0 }')
-                        docker tag "${dockerHubUsername}/${repositoryName}:${tag}" "${dockerHubUsername}/${repositoryName}:${newTag}"
-                    else
-                        echo "Docker image ${dockerHubUsername}/${repositoryName}:${var} does not exist."
-                        newTag="1.0"
-                    fi
-
-                    docker build -t "${dockerHubUsername}/${repositoryName}:${newTag}" .
-
-                    # Push the Docker image
-                    docker push "${dockerHubUsername}/${repositoryName}:${newTag}"
-
-                    # Remove the Docker image
-                    docker rmi -f "${dockerHubUsername}/${repositoryName}:${tag}"
-
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
                     '''
                 }
+                echo 'Build and Push Docker Image Stage Completed'
             }
         }
-    
-
 
         stage('Deploy Docker into EC2 Test-Servers') {
             steps {
                 script {
-                            def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${env.test1}"
-                            sh """
-                                ${sshCommand} sudo yum update -y
-                                ${sshCommand} sudo yum install docker -y
-                                ${sshCommand} sudo service docker start
-                                ${sshCommand} sudo systemctl start docker
-                                ${sshCommand} sudo usermod -a -G docker ec2-user
-                                ${sshCommand} sudo docker pull ${dockerHubUsername}/${repositoryName}:1.1
-                                ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && echo 'Port 5000 is already in use' || (${sshCommand} docker run -d -p 5000:5000 ${dockerHubUsername}/${repositoryName}:1.1)
-                            """
-                        
-                    
+
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    sh """
+                        sudo scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
+                        ${sshCommand} sudo yum update -y
+                        ${sshCommand} sudo yum install docker -y
+                        ${sshCommand} sudo service docker start
+                        ${sshCommand} sudo systemctl start docker 
+                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && sudo docker-compose down || (${sshCommand} docker-compose up)
+                    """
                 }
             }
         }
-        
 
         stage('Testing Test-Server') {
             steps {
-                sh "curl -m 60 http://${env.test1}:5000"
+                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
+                sh 'bash test.sh'
             }
         }
-
+    }
         stage('Deploy Docker into EC2 Prod-Servers') {
             steps {
-                        script {
-                            def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${env.prod1}"
-                            sh """
-                                ${sshCommand} sudo yum update -y
-                                ${sshCommand} sudo yum install docker -y
-                                ${sshCommand} sudo service docker start
-                                ${sshCommand} sudo systemctl start docker
-                                ${sshCommand} sudo usermod -a -G docker ec2-user
-                                ${sshCommand} sudo docker pull ${dockerHubUsername}/${repositoryName}:1.1
-                                ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && echo 'Port 5000 is already in use' || (${sshCommand} docker run -d -p 5000:5000 ${dockerHubUsername}/${repositoryName}:1.0)
-                            """
-                        
-                    
+                script {
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    sh """
+                        sudo scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
+                        ${sshCommand} sudo yum update -y
+                        ${sshCommand} sudo yum install docker -y
+                        ${sshCommand} sudo service docker start
+                        ${sshCommand} sudo systemctl start docker 
+                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && sudo docker-compose down || (${sshCommand} docker-compose up)
+                    """
                 }
             }
         }
-        
 
-        stage('Testing prod-Server') {
+        stage('Testing Prod-Server') {
             steps {
-                sh "curl -m 60 http://${env.prod1}:5000"
+                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
+                sh 'bash prod.sh'
+                }
             }
         }
     }
