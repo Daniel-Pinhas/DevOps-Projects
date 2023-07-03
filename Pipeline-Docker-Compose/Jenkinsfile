@@ -5,8 +5,8 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask-compose'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '18.221.53.201'
-        IPprod = '3.137.162.209'
+        IPtest = '18.117.152.236'
+        IPprod = '3.136.26.42'
     }
 
     stages {
