@@ -32,22 +32,20 @@ pipeline {
 
         stage('Deploy Docker into EC2 Test-Servers') {
             steps {
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
-                    sh "sudo scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
-
+                
                 script {
                     def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
-                        ${sshCommand} sudo service docker start
-                        ${sshCommand} sudo systemctl start docker 
+                        ${sshCommand} sudo rm -rf Pipeline-Docker-Compose
+                        sudo scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
                         ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && cd Pipeline-Docker-Compose && sudo docker-compose down || (${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up)
                     """
                 }
             }
         }
-    }
+    
         stage('Testing Test-Server') {
             steps {
                 dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
