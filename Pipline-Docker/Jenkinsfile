@@ -5,22 +5,22 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '3.14.253.29'
-        IPprod = '3.12.34.227'
+        IPtest = '18.221.53.201'
+        IPprod = '3.137.162.209'
     }
 
     stages {
         stage('Clean Up & Clone') {
             steps {
                 sh 'sudo rm -rf *'
-                sh 'git clone https://github.com/Daniel-Pinhas/Sela-Projects2.git'
+                sh 'git clone https://github.com/Daniel-Pinhas/DevOps-Projects.git'
                 echo 'Clean Up & Clone Stage Completed'
             }
         }
 
         stage('Build and Push Docker Image') {
             steps {
-                dir('Sela-Projects2/Flask-Project/') {
+                dir('DevOps-Projects/Pipline-Docker/Flask-Project/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Testing Test-Server') {
             steps {
-                dir('Sela-Projects2/tests/') {
+                dir('DevOps-Projects/tests/') {
                 sh 'bash test.sh'
             }
         }
@@ -73,7 +73,7 @@ pipeline {
 
         stage('Testing prod-Server') {
             steps {
-                dir('Sela-Projects2/tests/') {
+                dir('DevOps-Projects/tests/') {
                 sh 'bash prod.sh'
                 }
             }
