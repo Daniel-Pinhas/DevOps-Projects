@@ -1,0 +1,99 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Cleanup and Clone') {
+            steps {
+                echo 'Performing Cleanup..'
+                sh 'rm -rf *'
+                sh 'git clone https://github.com/Daniel-Pinhas/Sela-Projects.git'
+            }
+        }
+
+        stage('Packaging') {
+            steps {
+                sh 'tar -cvzf Sela-Projects.tar.gz Sela-Projects'
+            }
+        }
+
+        stage('Push Package to S3') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
+                    sh 'aws s3 cp Sela-Projects.tar.gz s3://jenkins-project-dp/'
+                }
+            }
+        }
+
+        stage('Deploy S3 into EC2 Test-Servers') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
+                    sshagent(credentials: ['SSH-Agent']) {
+                        script {
+                            def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${env.test1}"
+                            sh """
+                                ${sshCommand} rm -rf Sela-Projects.tar.gz
+                                ${sshCommand} 'aws s3 cp s3://jenkins-project-dp/Sela-Projects.tar.gz ~'
+                                ${sshCommand} 'tar -xvzf Sela-Projects.tar.gz'
+                                ${sshCommand} 'sudo yum update -y'
+                                ${sshCommand} 'sudo yum install python3-pip -y'
+                                ${sshCommand} 'pip3 install --user ansible'
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Ansible on Test-Servers') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
+                    sh 'tar -xvzf Sela-Projects.tar.gz'
+                    sh 'sudo apt update -y'
+                    sh 'sudo apt install ansible -y'
+                    sh 'sudo apt install python3-pip -y'
+                    sh 'cd /var/lib/jenkins/workspace/Pipeline-S3/Sela-Projects/Pipeline-S3/Ansilbe && ansible-playbook -i test.ini playbook.yml'
+                }
+            }
+        }
+
+        stage('Testing Test-Server') {
+            steps {
+                sh "curl -m 30 http://${env.test1}:5000"
+            }
+        }
+
+        stage('Deploy S3 into EC2 Prod-Servers') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
+                    sshagent(credentials: ['SSH-Agent']) {
+                        script {
+                            def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${env.prod1}"
+                            sh """
+                                ${sshCommand} rm -rf Sela-Projects.tar.gz
+                                ${sshCommand} 'aws s3 cp s3://jenkins-project-dp/Sela-Projects.tar.gz ~'
+                                ${sshCommand} 'tar -xvzf Sela-Projects.tar.gz'
+                                ${sshCommand} 'sudo yum update -y'
+                                ${sshCommand} 'sudo yum install python3-pip -y'
+                                ${sshCommand} 'pip3 install --user ansible'
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy Ansible on Prod-Servers') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
+                    sh 'cd /var/lib/jenkins/workspace/Pipeline-S3/Sela-Projects/Pipeline-S3/Ansilbe && ansible-playbook -i prod.ini playbook.yml'
+                }
+            }
+        }
+
+        stage('Testing prod-Server') {
+            steps {
+                sh "curl -m 30 http://${env.prod1}:5000"
+            }
+        }
+    }
+}

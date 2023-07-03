@@ -1,0 +1,103 @@
+---
+- name: Install and configure Apache HTTP Server and Flask
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update package cache
+      package_facts:
+      become: yes
+
+    - name: Install Apache HTTP Server and its dependencies
+      package:
+        name: httpd
+        state: present
+      become: yes
+      when: "'web' in group_names"
+
+    - name: Install SSH server
+      package:
+        name: openssh-server
+        state: present
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Start the Apache service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+      become: yes
+      when: "'web' in group_names"
+
+    - name: Install Git
+      package:
+        name: git
+        state: present
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/Daniel-Pinhas/Flask-Project.git
+        dest: /home/ec2-user/Flask-Project
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Install Python and pip
+      package:
+        name:
+          - python3
+          - python3-pip
+        state: present
+      become: yes
+
+    - name: Install Flask
+      pip:
+        name: flask
+        state: present
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Install Gunicorn
+      pip:
+        name: gunicorn
+        state: present
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Copy index.html to Apache web root
+      copy:
+        src: /var/lib/jenkins/workspace/First-Pipeline/Sela-Projects/Standard-html/index.html
+        dest: /var/www/html/index.html
+      become: yes
+      when: "'web' in group_names"
+
+    - name: Create Flask systemd service
+      template:
+        src: /var/lib/jenkins/workspace/First-Pipeline/Sela-Projects/Ansible-Project/templates/flask.service.j2
+        dest: /etc/systemd/system/flaskapp.service
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Reload systemd daemon
+      command: sudo systemctl daemon-reload
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Start Flask App service
+      command: sudo systemctl start flaskapp.service
+      become: yes
+      when: "'flask' in group_names"
+
+    - name: Enable Flask App service on boot
+      command: sudo systemctl enable flaskapp.service
+      become: yes
+      when: "'flask' in group_names"
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: httpd
+        state: restarted
+      become: yes
+      when: "'web' in group_names"
