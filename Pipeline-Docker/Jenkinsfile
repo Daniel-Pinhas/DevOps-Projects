@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build and Push Docker Image') {
             steps {
-                dir('DevOps-Projects/Pipline-Docker/Flask-Project/') {
+                dir('DevOps-Projects/Pipeline-Docker/Flask-Project/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -49,7 +49,7 @@ pipeline {
 
         stage('Testing Test-Server') {
             steps {
-                dir('DevOps-Projects/Pipline-Docker/tests/') {
+                dir('DevOps-Projects/Pipeline-Docker/tests/') {
                 sh 'bash test.sh'
             }
         }
@@ -73,7 +73,7 @@ pipeline {
 
         stage('Testing prod-Server') {
             steps {
-                dir('DevOps-Projects/Pipline-Docker/tests/') {
+                dir('DevOps-Projects/Pipeline-Docker/tests/') {
                 sh 'bash prod.sh'
                 }
             }
