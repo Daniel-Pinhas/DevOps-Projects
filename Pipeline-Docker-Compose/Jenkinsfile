@@ -41,7 +41,7 @@ pipeline {
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo service docker start
                         ${sshCommand} sudo systemctl start docker 
-                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && sudo docker-compose down || (${sshCommand} docker-compose up)
+                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && cd Pipeline-Docker-Compose && sudo docker-compose down || (${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up)
                     """
                 }
             }
