@@ -50,7 +50,8 @@ pipeline {
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
-                        ${sshCommand} sudo rm -rf Pipeline-Docker-Compose
+                        ${sshCommand} sudo service docker start
+                        ${sshCommand} sudo systemctl start docker
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
@@ -90,7 +91,11 @@ pipeline {
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo service docker start
                         ${sshCommand} sudo systemctl start docker 
-                        ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null && sudo docker-compose down || (${sshCommand} docker-compose up)
+                        if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
+                        else
+                            ${sshCommand} sudo docker-compose up
+                        fi
                     """
                 }
             }
