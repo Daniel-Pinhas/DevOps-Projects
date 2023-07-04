@@ -5,8 +5,8 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask-compose'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '18.117.152.236'
-        IPprod = '3.136.26.42'
+        IPtest = '3.135.218.172'
+        IPprod = '	18.116.81.193'
     }
 
     stages {
@@ -30,16 +30,25 @@ pipeline {
             }
         }
 
-        stage('Deploy Docker into EC2 Test-Servers') {
+
+        stage('Copy Pipeline to Test-EC2') {
             steps {
-                
+                dir('DevOps-Projects/') {
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                }
+                echo 'Copy Pipeline to Test-EC2 Stage Completed'
+            }
+        }
+        
+
+        stage('Deploy Docker into EC2 Test-Servers') {
+            steps {                
                 script {
                     def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo rm -rf Pipeline-Docker-Compose
-                        sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:/home/ec2-user
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose down && ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
                         else
@@ -57,6 +66,17 @@ pipeline {
             }
         }
     }
+
+        stage('Copy Pipeline to Test-EC2') {
+            steps {
+                dir('DevOps-Projects/') {
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~"
+                }
+                echo 'Copy Pipeline to Test-EC2 Stage Completed'
+            }
+        }
+
+
         stage('Deploy Docker into EC2 Prod-Servers') {
             steps {
                 script {
