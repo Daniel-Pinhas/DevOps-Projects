@@ -33,7 +33,9 @@ pipeline {
 
         stage('Copy Pipeline to Test-EC2') {
             steps {
-                sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                withCredentials([sshUserPrivateKey(credentialsId: 'AWS Credential 1', keyFileVariable: 'SSH_KEY')]) {
+                    sh "sudo scp -r -i $SSH_KEY -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
         }
@@ -66,12 +68,12 @@ pipeline {
         }
     }
 
-        stage('Copy Pipeline to Test-EC2') {
+        stage('Copy Pipeline to Prod-EC2') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'AWS Credential 1', keyFileVariable: 'SSH_KEY')]) {
-                    sh "sudo scp -r -i $SSH_KEY -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                    sh "sudo scp -r -i $SSH_KEY -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~"
                 }
-                echo 'Copy Pipeline to Test-EC2 Stage Completed'
+                echo 'Copy Pipeline to Prod-EC2 Stage Completed'
             }
         }
 
