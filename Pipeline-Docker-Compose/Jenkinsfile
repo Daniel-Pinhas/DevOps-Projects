@@ -51,8 +51,8 @@ pipeline {
                         ${sshCommand} sudo service docker start
                         ${sshCommand} sudo systemctl start docker
                         ${sshCommand} sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+                        ${sshCommand} sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
-                        ${sshCommand} ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
@@ -93,8 +93,8 @@ pipeline {
                         ${sshCommand} sudo service docker start
                         ${sshCommand} sudo systemctl start docker
                         ${sshCommand} sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+                        ${sshCommand} sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
-                        ${sshCommand} ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
