@@ -6,7 +6,7 @@ pipeline {
         repositoryName = 'flask-compose'
         dockerHubUsername = 'danielpinhas'
         IPtest = '3.135.218.172'
-        IPprod = '	18.116.81.193'
+        IPprod = '18.116.81.193'
     }
 
     stages {
