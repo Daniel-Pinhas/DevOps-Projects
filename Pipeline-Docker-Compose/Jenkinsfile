@@ -36,6 +36,7 @@ pipeline {
                   withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
                     sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPtest}:~"
                     sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db/init.sql ec2-user@${IPtest}:~"
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project ec2-user@${IPtest}:~"
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
@@ -76,6 +77,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
                     sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~"
                     sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db/init.sql ec2-user@${IPprod}:~"
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project ec2-user@${IPprod}:~"
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
             }
