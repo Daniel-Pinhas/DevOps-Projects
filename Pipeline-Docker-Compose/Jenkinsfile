@@ -66,12 +66,15 @@ pipeline {
         }
     }
 
-        stage('Copy Pipeline to Prod-EC2') {
+        stage('Copy Pipeline to Test-EC2') {
             steps {
-                sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~"
+                withCredentials([sshUserPrivateKey(credentialsId: 'AWS Credential 1', keyFileVariable: 'SSH_KEY')]) {
+                    sh "sudo scp -r -i $SSH_KEY -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
         }
+
 
 
         stage('Deploy Docker into EC2 Prod-Servers') {
@@ -79,7 +82,6 @@ pipeline {
                 script {
                     def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
                     sh """
-                        sudo scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo service docker start
