@@ -39,9 +39,7 @@ pipeline {
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
-        }
-
-        
+        }       
 
         stage('Deploy Docker into EC2 Test-Servers') {
             steps {                
@@ -52,6 +50,8 @@ pipeline {
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo service docker start
                         ${sshCommand} sudo systemctl start docker
+                        ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                        ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
@@ -90,7 +90,9 @@ pipeline {
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
                         ${sshCommand} sudo service docker start
-                        ${sshCommand} sudo systemctl start docker 
+                        ${sshCommand} sudo systemctl start docker
+                        ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                        ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
                             ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
