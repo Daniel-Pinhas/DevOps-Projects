@@ -2,6 +2,15 @@ import docker
 
 client = docker.from_env()
 
+# Delete the last version of the image if it exists
+existing_versions = [float(image.tags[0].split(":")[1]) for image in client.images.list() if image.tags and image.tags[0].startswith("danielpinhas/flask-compose:")]
+if existing_versions:
+    last_version = max(existing_versions)
+    last_image_name = f"danielpinhas/flask-compose:{last_version}"
+    client.images.remove(image=last_image_name, force=True)
+    print(f"Successfully removed image: {last_image_name}")
+
+# Build and push the new version of the image
 images = client.images.list()
 
 existing_versions = [float(image.tags[0].split(":")[1]) for image in images if image.tags and image.tags[0].startswith("danielpinhas/flask-compose:")]
