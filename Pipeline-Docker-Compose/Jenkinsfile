@@ -34,7 +34,7 @@ pipeline {
         stage('Copy Pipeline to Test-EC2') {
             steps {
                 dir('DevOps-Projects/') {
-                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
+                    sh "sudo scp -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~"
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
@@ -70,7 +70,7 @@ pipeline {
         stage('Copy Pipeline to Prod-EC2') {
             steps {
                 dir('DevOps-Projects/') {
-                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~"
+                    sh "sudo scp -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no --exclude=venv /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~"
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
