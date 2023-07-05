@@ -7,8 +7,8 @@ images = client.images.list()
 existing_versions = [float(image.tags[0].split(":")[1]) for image in images if image.tags and image.tags[0].startswith("danielpinhas/flask-compose:")]
 
 if existing_versions:
-    latest_version = max(existing_versions)
-    next_version = latest_version + 0.1
+    latest_version = max(existing_versions) 
+    next_version = latest_version + 0.1 
     # Delete the previous version image
     previous_version = latest_version
     previous_image_name = f"danielpinhas/flask-compose:{previous_version}"
