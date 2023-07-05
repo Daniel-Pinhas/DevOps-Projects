@@ -35,7 +35,7 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
+                        scp -r -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
                 """
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
@@ -75,7 +75,7 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~
+                        scp -r -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~
                     """
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
@@ -87,7 +87,7 @@ pipeline {
         stage('Deploy Docker into EC2 Prod-Servers') {
             steps {
                 script {
-                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPprod}"
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
@@ -96,9 +96,9 @@ pipeline {
                         ${sshCommand} sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
+                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose down && ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
                         else
-                            ${sshCommand} sudo docker-compose up
+                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
                         fi
                     """
                 }
