@@ -21,21 +21,15 @@ else:
 next_version = f"{next_version:.1f}"
 image_name = f"danielpinhas/flask-compose:{next_version}"
 
-# Check if the latest version image already exists
-latest_image_name = f"danielpinhas/flask-compose:{latest_version}"
-latest_image = client.images.get(latest_image_name)
-if latest_image:
-    print(f"Latest version image already exists: {latest_image_name}")
-else:
-    # Build the new version image
-    client.images.build(path=".", tag=image_name, rm=True, pull=True)
-    print(f"Successfully built image: {image_name}")
-    
-    # Push the image to Docker Hub
-    client.images.push(repository="danielpinhas/flask-compose", tag=next_version)
-    print(f"Successfully pushed image: {image_name}")
+# Build the new version image
+client.images.build(path=".", tag=image_name, rm=True, pull=True)
+print(f"Successfully built image: {image_name}")
 
-# Tag the next version as "latest"
+# Push the image to Docker Hub
+client.images.push(repository="danielpinhas/flask-compose", tag=next_version)
+print(f"Successfully pushed image: {image_name}")
+
+# Tag the new version as "latest"
 latest_image_name = "danielpinhas/flask-compose:latest"
 client.images.get(image_name).tag(latest_image_name)
 print(f"Successfully tagged image as latest: {latest_image_name}")
