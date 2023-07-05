@@ -35,7 +35,10 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r \
+                        --exclude 'Flask-Project/venv' \
+                        /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose \
+                        ec2-user@${IPtest}:~
                 """
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
@@ -75,7 +78,10 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r \
+                        --exclude 'Flask-Project/venv' \
+                        /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose \
+                        ec2-user@${IPprod}:~
                     """
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
