@@ -10,24 +10,30 @@ if existing_versions:
     latest_version = max(existing_versions)
     next_version = latest_version + 0.1
     # Delete the previous version image
-    previous_version = latest_version 
+    previous_version = latest_version
     previous_image_name = f"danielpinhas/flask-compose:{previous_version}"
     client.images.remove(image=previous_image_name, force=True)
     print(f"Successfully deleted image: {previous_image_name}")
 else:
     next_version = 1.0
     
-    
 # Format the version number to one decimal place
 next_version = f"{next_version:.1f}"
 image_name = f"danielpinhas/flask-compose:{next_version}"
 
-client.images.build(path=".", tag=image_name, rm=True, pull=True)
-print(f"Successfully built image: {image_name}")
-
-# Push the image to Docker Hub
-client.images.push(repository="danielpinhas/flask-compose", tag=next_version)
-print(f"Successfully pushed image: {image_name}")
+# Check if the latest version image already exists
+latest_image_name = f"danielpinhas/flask-compose:{latest_version}"
+latest_image = client.images.get(latest_image_name)
+if latest_image:
+    print(f"Latest version image already exists: {latest_image_name}")
+else:
+    # Build the new version image
+    client.images.build(path=".", tag=image_name, rm=True, pull=True)
+    print(f"Successfully built image: {image_name}")
+    
+    # Push the image to Docker Hub
+    client.images.push(repository="danielpinhas/flask-compose", tag=next_version)
+    print(f"Successfully pushed image: {image_name}")
 
 # Tag the next version as "latest"
 latest_image_name = "danielpinhas/flask-compose:latest"
@@ -37,5 +43,3 @@ print(f"Successfully tagged image as latest: {latest_image_name}")
 # Push the latest image to Docker Hub
 client.images.push(repository="danielpinhas/flask-compose", tag="latest")
 print(f"Successfully pushed latest image: {latest_image_name}")
-
-
