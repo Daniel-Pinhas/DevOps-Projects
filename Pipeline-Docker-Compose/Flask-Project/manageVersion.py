@@ -37,3 +37,9 @@ print(f"Successfully tagged image as latest: {latest_image_name}")
 # Push the latest image to Docker Hub
 client.images.push(repository="danielpinhas/flask-compose", tag="latest")
 print(f"Successfully pushed latest image: {latest_image_name}")
+
+# Remove the intermediate image with <none> tag
+intermediate_images = [image for image in images if "<none>" in image.tags]
+for image in intermediate_images:
+    client.images.remove(image=image.id, force=True)
+    print(f"Successfully deleted intermediate image: {image.id}")
