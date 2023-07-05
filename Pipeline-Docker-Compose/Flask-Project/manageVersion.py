@@ -38,10 +38,9 @@ print(f"Successfully tagged image as latest: {latest_image_name}")
 client.images.push(repository="danielpinhas/flask-compose", tag="latest")
 print(f"Successfully pushed latest image: {latest_image_name}")
 
-# Remove the intermediate image with <none> tag
-intermediate_images = [image for image in images if "<none>" in image.tags]
+# Remove the intermediate images without a tag
+intermediate_images = [image for image in images if not image.tags]
 for image in intermediate_images:
-    image_id = image.id.split(":")[1]  # Get the image ID without the "sha256:" prefix
-    client.images.remove(image=image_id, force=True)
-    print(f"Successfully deleted intermediate image: {image_id}")
+    client.images.remove(image=image.id, force=True)
+    print(f"Successfully deleted intermediate image: {image.id}")
 
