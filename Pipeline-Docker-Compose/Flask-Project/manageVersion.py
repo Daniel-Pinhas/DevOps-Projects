@@ -9,8 +9,14 @@ existing_versions = [float(image.tags[0].split(":")[1]) for image in images if i
 if existing_versions:
     latest_version = max(existing_versions)
     next_version = latest_version + 0.1
+    # Delete the previous version image
+    previous_version = latest_version 
+    previous_image_name = f"danielpinhas/flask-compose:{previous_version}"
+    client.images.remove(image=previous_image_name, force=True)
+    print(f"Successfully deleted image: {previous_image_name}")
 else:
     next_version = 1.0
+    
     
 # Format the version number to one decimal place
 next_version = f"{next_version:.1f}"
@@ -32,8 +38,4 @@ print(f"Successfully tagged image as latest: {latest_image_name}")
 client.images.push(repository="danielpinhas/flask-compose", tag="latest")
 print(f"Successfully pushed latest image: {latest_image_name}")
 
-# Delete the previous version image
-previous_version = latest_version - 0.1
-previous_image_name = f"danielpinhas/flask-compose:{previous_version}"
-client.images.remove(image=previous_image_name, force=True)
-print(f"Successfully deleted image: {previous_image_name}")
+
