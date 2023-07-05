@@ -31,3 +31,6 @@ print(f"Successfully tagged image as latest: {latest_image_name}")
 # Push the latest image to Docker Hub
 client.images.push(repository="danielpinhas/flask-compose", tag="latest")
 print(f"Successfully pushed latest image: {latest_image_name}")
+
+client.images.remove(image=latest_image_name, force=True)
+print(f"Successfully deleted image: {latest_image_name}")
