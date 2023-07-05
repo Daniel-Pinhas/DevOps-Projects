@@ -5,8 +5,8 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask-compose'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '3.138.126.216'
-        IPprod = '3.137.190.184'
+        IPtest = '18.191.235.67'
+        IPprod = '18.118.9.148'
     }
 
     stages {
@@ -80,6 +80,7 @@ pipeline {
                     sh """
                         scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~
                         scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPprod}:~
+                            
                     """
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
