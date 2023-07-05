@@ -5,8 +5,8 @@ pipeline {
         // Initialize the initial version tag
         repositoryName = 'flask-compose'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '18.220.129.232'
-        IPprod = '3.137.178.229'
+        IPtest = '3.138.126.216'
+        IPprod = '3.137.190.184'
     }
 
     stages {
@@ -34,7 +34,7 @@ pipeline {
         stage('Copy Pipeline to Test-EC2') {
             steps {
                   withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
-                    sh "scp -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/* ec2-user@${IPtest}:~"
+                    sh "scp -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/* ec2-user@${IPtest}:~"
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
             }
@@ -43,7 +43,7 @@ pipeline {
         stage('Deploy Docker into EC2 Test-Servers') {
             steps {                
                 script {
-                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
@@ -72,9 +72,9 @@ pipeline {
         stage('Copy Pipeline to Prod-EC2') {
             steps {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AWS Credential 1']]) {
-                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~"
-                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db/init.sql ec2-user@${IPprod}:~"
-                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/dan.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project/Dockerfile ec2-user@${IPprod}:~"
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~"
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db/init.sql ec2-user@${IPprod}:~"
+                    sh "sudo scp -r -i /var/lib/jenkins/.ssh/key.pem /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project/Dockerfile ec2-user@${IPprod}:~"
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
             }
@@ -85,7 +85,7 @@ pipeline {
         stage('Deploy Docker into EC2 Prod-Servers') {
             steps {
                 script {
-                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/dan.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
                     sh """
                         ${sshCommand} sudo yum update -y
                         ${sshCommand} sudo yum install docker -y
