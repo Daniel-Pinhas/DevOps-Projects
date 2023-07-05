@@ -57,9 +57,9 @@ pipeline {
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         ${sshCommand} docker pull danielpinhas/flask-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
                         else
-                            ${sshCommand} sudo docker-compose up
+                            ${sshCommand} sudo docker-compose up -d
                         fi
                     """
                 }
@@ -80,7 +80,6 @@ pipeline {
                     sh """
                         scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~
                         scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPprod}:~
-                            
                     """
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
@@ -103,9 +102,9 @@ pipeline {
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         ${sshCommand} docker pull danielpinhas/flask-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
                         else
-                            ${sshCommand} sudo docker-compose up
+                            ${sshCommand} sudo docker-compose up -d 
                         fi
                     """
                 }
