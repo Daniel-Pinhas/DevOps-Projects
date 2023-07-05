@@ -35,8 +35,9 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        sudo rm -rf /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project@tmp
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPtest}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPtest}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project ec2-user@${IPtest}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPtest}:~
                 """
                 }
                 echo 'Copy Pipeline to Test-EC2 Stage Completed'
@@ -55,9 +56,9 @@ pipeline {
                         ${sshCommand} sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose down && ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
-                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
+                            ${sshCommand} sudo docker-compose up
                         fi
                     """
                 }
@@ -76,8 +77,9 @@ pipeline {
             steps {
                  sshagent(credentials: ['SSH-Agent']) {
                     sh """
-                        sudo rm -rf /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project@tmp
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose ec2-user@${IPprod}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/Flask-Project ec2-user@${IPprod}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPprod}:~
                     """
                 }
                 echo 'Copy Pipeline to Prod-EC2 Stage Completed'
@@ -98,9 +100,9 @@ pipeline {
                         ${sshCommand} sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
                         ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
                         if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose down && ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up
                         else
-                            ${sshCommand} cd Pipeline-Docker-Compose && sudo docker-compose up
+                            ${sshCommand} sudo docker-compose up
                         fi
                     """
                 }
