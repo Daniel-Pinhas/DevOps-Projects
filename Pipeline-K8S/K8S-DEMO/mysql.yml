@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-configmap
+data:
+  init.sql: |
+    -- Drop the database if it exists
+    DROP DATABASE IF EXISTS devopsroles;
+
+    -- Create the database
+    CREATE DATABASE devopsroles;
+
+    -- Use the database
+    USE devopsroles;
+
+    -- Create the table
+    CREATE TABLE test_table (
+      url VARCHAR(200)
+    );
+
+    -- Insert data into the table
+    INSERT INTO test_table(url)
+    VALUES
+      ('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXkwempocWhwbHd0MnRreWk1azgwN2VsMHVoZ2NzM3FhODFzc2M2NyZlcD1'),
+      ('https://media1.giphy.com/media/RQSuZfuylVNAY/200w.webp?cid=ecf05e47n4cdqaz5msne59cx3fvz6c5y9sg13y19tehfwwck&e'),
+      ('https://media4.giphy.com/media/1LweXxLwVT0J2/giphy.webp?cid=ecf05e47i5esvlro7tjmr4y9uo7wk5ewduom4h8qmqzfb7cr&'),
+      ('https://media0.giphy.com/media/BpDYodBlBXFIs/200.webp?cid=ecf05e4720mh0y949f7ue74r5xst5lnjcabxz4njc81al1nz&ep'),
+      ('https://media4.giphy.com/media/a5MdgE5zfNZrW/giphy.webp?cid=ecf05e47c8yxnbizuxbowo5eu3cllut9jxq7f7e7hyz69omv&'),
+      ('https://media0.giphy.com/media/bhSi84uFsp66s/200.webp?cid=ecf05e47bek95fdlgsjvp4y0ckd9op99cwli90zt1olliwwf&ep'),
+      ('https://media3.giphy.com/media/x9q0Y6F0BGoTBoqxuV/giphy.webp?cid=ecf05e47rpgbqex2pq000crgh2m76g5jxrqhko46tos5'),
+      ('https://media0.giphy.com/media/Ssq1XEzD0D6SI/giphy.webp?cid=ecf05e474etxjps0ok99zsj263u0aq6f8ymogvqwou0l5wsr&');
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+            - name: MYSQL_DATABASE
+              value: devopsroles
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: mysql-password
+          volumeMounts:
+            - name: mysql-volume
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-volume
+          configMap:
+            name: mysql-configmap
