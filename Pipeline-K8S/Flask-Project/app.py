@@ -3,14 +3,16 @@ from flask import Flask, render_template
 import os
 import random
 import mysql.connector
+import socket
 
 app = Flask(__name__)
 
 def get_random_url() -> str:
+    host = socket.gethostbyname('mysql-service')
     config = {
         'user': 'daniel',
         'password': 'daniel',
-        'host': 'db',
+        'host': host,
         'port': '3306',
         'database': 'devopsroles'
     }
@@ -23,6 +25,7 @@ def get_random_url() -> str:
     if urls:
         return random.choice(urls)[0]
     return None
+
 
 @app.route("/")
 def index():
