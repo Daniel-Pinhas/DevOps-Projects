@@ -1,0 +1,130 @@
+pipeline {
+    agent any
+
+    environment {
+        // Initialize the initial version tag
+        repositoryName = 'flask-compose'
+        dockerHubUsername = 'danielpinhas'
+        IPtest = '18.191.235.67'
+        IPprod = '18.118.9.148'
+    }
+
+    stages {
+        stage('Clean Up & Clone') {
+            steps {
+                sh 'sudo rm -rf *'
+                sh 'git clone https://github.com/Daniel-Pinhas/DevOps-Projects.git'
+                echo 'Clean Up & Clone Stage Completed'
+            }
+        }
+
+        stage('Build and Push Docker Image') {
+            steps {
+                dir('DevOps-Projects/Pipeline-Docker-Compose/Flask-Project/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
+                }
+                echo 'Build and Push Docker Image Stage Completed'
+            }
+        }
+
+
+        stage('Copy Pipeline to Test-EC2') {
+            steps {
+                 sshagent(credentials: ['SSH-Agent']) {
+                    sh """
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPtest}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPtest}:~
+                """
+                }
+                echo 'Copy Pipeline to Test-EC2 Stage Completed'
+            }
+        }       
+
+        stage('Deploy Docker into EC2 Test-Servers') {
+            steps {                
+                script {
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
+                    sh """
+                        ${sshCommand} sudo yum update -y
+                        ${sshCommand} sudo yum install docker -y
+                        ${sshCommand} sudo service docker start
+                        ${sshCommand} sudo systemctl start docker
+                        ${sshCommand} sudo usermod -aG docker ec2-user
+                        if ! ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN >/dev/null; then
+                            ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+                            ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
+                        else
+                            echo "Port 5000 is already in use."
+                        fi
+                        ${sshCommand} docker pull danielpinhas/flask-compose
+                        if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
+                        else
+                            ${sshCommand} sudo docker-compose up -d
+                        fi
+                    """
+                }
+            }
+        }
+    
+        stage('Testing Test-Server') {
+            steps {
+                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
+                sh 'bash test.sh'
+            }
+        }
+    }
+
+        stage('Copy Pipeline to Prod-EC2') {
+            steps {
+                 sshagent(credentials: ['SSH-Agent']) {
+                    sh """
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~
+                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPprod}:~
+                    """
+                }
+                echo 'Copy Pipeline to Prod-EC2 Stage Completed'
+            }
+        }
+
+
+
+        stage('Deploy Docker into EC2 Prod-Servers') {
+            steps {
+                script {
+                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPprod}"
+                    sh """
+                        ${sshCommand} sudo yum update -y
+                        ${sshCommand} sudo yum install docker -y
+                        ${sshCommand} sudo service docker start
+                        ${sshCommand} sudo systemctl start docker
+                        ${sshCommand} sudo usermod -aG docker ec2-user
+                        if ! ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN >/dev/null; then
+                            ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
+                            ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
+                        else
+                            echo "Port 5000 is already in use."
+                        fi
+                        ${sshCommand} docker pull danielpinhas/flask-compose
+                        if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
+                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
+                        else
+                            ${sshCommand} sudo docker-compose up -d 
+                        fi
+                    """
+                }
+            }
+        }
+
+        stage('Testing Prod-Server') {
+            steps {
+                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
+                sh 'bash prod.sh'
+                }
+            }
+        }
+    }
+}
