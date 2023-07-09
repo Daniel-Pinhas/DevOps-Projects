@@ -1,4 +1,14 @@
 apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+type: Opaque
+data:
+  mysql-user: ZGFuaWVs
+  mysql-password: cGFzc3dvcmQ6WkdGdWFXVnM=
+  mysql-root-password: ZGFuaWVs
+
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mysql-configmap
