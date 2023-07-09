@@ -10,8 +10,8 @@ def get_random_url() -> str:
     config = {
         'user': 'daniel',
         'password': 'daniel',
-        'host': 'mysql-service',
-        'port': '3306',
+        'host': '192.168.59.102',
+        'port': '31000',
         'database': 'devopsroles'
     }
     connection = mysql.connector.connect(**config)
