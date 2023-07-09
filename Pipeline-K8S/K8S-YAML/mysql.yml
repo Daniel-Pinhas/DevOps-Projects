@@ -7,7 +7,7 @@ data:
   mysql-user: ZGFuaWVs
   mysql-password: cGFzc3dvcmQ6WkdGdWFXVnM=
   mysql-root-password: ZGFuaWVs
-  
+
 ---
 
 apiVersion: v1
@@ -51,10 +51,12 @@ metadata:
 spec:
   selector:
     app: mysql
+  type: NodePort
   ports:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+
 
 ---
 
