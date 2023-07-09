@@ -85,7 +85,7 @@ data:
         <section id="dogs">
             <h2>Dogs Gifs</h2>
             <p>Click the button below to explore Dogs Gifs:</p>
-            <button onclick="window.location.href='http://192.168.49.2:30100'">Explore Dogs Gifs</button>
+            <button onclick="window.location.href='http://192.168.59.101:30100'">Explore Dogs Gifs</button>
         </section>
 
         <section id="alpacas">
