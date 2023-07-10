@@ -72,6 +72,10 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: daniel
+            - name: MYSQL_USER
+              value: daniel
+            - name: MYSQL_PASSWORD
+              value: daniel
           volumeMounts:
             - name: mysql-volume
               mountPath: /docker-entrypoint-initdb.d
