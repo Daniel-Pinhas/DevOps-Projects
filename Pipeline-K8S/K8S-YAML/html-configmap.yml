@@ -76,7 +76,7 @@ data:
             <nav>
                 <ul>
                     <li><a href="#dogs">Dogs Gifs</a></li>
-                    <li><a href="#alpacas">Alpaca Gifs</a></li>
+                    <li><a href="#alpacas">Alpacas Gifs</a></li>
                     <li><a href="#classmates">Classmates Gifs</a></li>
                 </ul>
             </nav>
@@ -90,7 +90,7 @@ data:
 
         <section id="alpacas">
             <h2>Alpaca Gifs</h2>
-            <p>Click the button below to explore Alpaca Gifs:</p>
+            <p>Click the button below to explore Alpacas Gifs:</p>
             <button onclick="window.location.href='#'">Explore Alpaca Gifs</button>
         </section>
 
