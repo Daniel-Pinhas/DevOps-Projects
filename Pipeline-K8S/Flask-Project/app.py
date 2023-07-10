@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 def get_random_url() -> str:
     config = {
-        'user': 'daniel',
+        'user': 'root',
         'password': 'daniel',
         'host': '192.168.59.103',
         'port': '31000',
