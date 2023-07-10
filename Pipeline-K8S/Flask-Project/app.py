@@ -11,7 +11,7 @@ def get_random_url() -> str:
         'user': 'root',
         'password': 'daniel',
         'host': '192.168.59.103',
-        'port': '30100',
+        'port': '31000',
         'database': 'devopsroles'
     }
     connection = mysql.connector.connect(**config)
