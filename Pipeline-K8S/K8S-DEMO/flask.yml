@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flask-deployment
+  name: flask-deployment-1
   labels:
     app: flask
 spec:
-  replicas: 6
+  replicas: 2
   selector:
     matchLabels:
-      app: flask
+      app: flask-1
   template:
     metadata:
       labels:
-        app: flask
+        app: flask-1
     spec:
       containers:
         - name: flask
@@ -28,10 +28,29 @@ spec:
               value: "mysql-service:3306"
             - name: MYSQL_ROOT_PASSWORD
               value: daniel
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment-2
+  labels:
+    app: flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-2
+  template:
+    metadata:
+      labels:
+        app: flask-2
+    spec:
+      containers:
         - name: flask2
           image: danielpinhas/flask2-k8s
           ports:
-            - containerPort: 5001
+            - containerPort: 5000
           env:
             - name: USER_NAME
               value: daniel
@@ -41,10 +60,29 @@ spec:
               value: "mysql-service:3306"
             - name: MYSQL_ROOT_PASSWORD
               value: daniel
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment-3
+  labels:
+    app: flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-3
+  template:
+    metadata:
+      labels:
+        app: flask-3
+    spec:
+      containers:
         - name: flask3
           image: danielpinhas/flask3-k8s
           ports:
-            - containerPort: 5002
+            - containerPort: 5000
           env:
             - name: USER_NAME
               value: daniel
@@ -54,56 +92,47 @@ spec:
               value: "mysql-service:3306"
             - name: MYSQL_ROOT_PASSWORD
               value: daniel
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service
+  name: flask-service-1
 spec:
   type: NodePort
   selector:
-    app: flask
+    app: flask-1
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
       nodePort: 30100
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask2-service
+  name: flask-service-2
 spec:
   type: NodePort
   selector:
-    app: flask
+    app: flask-2
   ports:
     - protocol: TCP
-      port: 5001
-      targetPort: 5001
+      port: 5000
+      targetPort: 5000
       nodePort: 30200
-
+      
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask3-service
+  name: flask-service-3
 spec:
   type: NodePort
   selector:
-    app: flask
+    app: flask-3
   ports:
     - protocol: TCP
-      port: 5002
-      targetPort: 5002
+      port: 5000
+      targetPort: 5000
       nodePort: 30300
