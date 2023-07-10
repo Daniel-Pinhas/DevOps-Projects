@@ -26,6 +26,8 @@ spec:
               value: daniel
             - name: DB_URL
               value: "mysql-service:3306"
+            - name: MYSQL_ROOT_PASSWORD
+              value: daniel
         - name: flask2
           image: danielpinhas/flask2-k8s
           ports:
@@ -37,6 +39,8 @@ spec:
               value: daniel
             - name: DB_URL
               value: "mysql-service:3306"
+            - name: MYSQL_ROOT_PASSWORD
+              value: daniel
         - name: flask3
           image: danielpinhas/flask3-k8s
           ports:
@@ -48,13 +52,16 @@ spec:
               value: daniel
             - name: DB_URL
               value: "mysql-service:3306"
+            - name: MYSQL_ROOT_PASSWORD
+              value: daniel
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
-      
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -68,7 +75,9 @@ spec:
       port: 5000
       targetPort: 5000
       nodePort: 31000
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -82,7 +91,9 @@ spec:
       port: 5000
       targetPort: 5000
       nodePort: 31100
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
