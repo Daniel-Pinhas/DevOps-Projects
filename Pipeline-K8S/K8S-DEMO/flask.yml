@@ -74,7 +74,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 31000
+      nodePort: 30100
 
 ---
 
@@ -90,7 +90,7 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 31100
+      nodePort: 30200
 
 ---
 
@@ -106,4 +106,4 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: 31200
+      nodePort: 30300
