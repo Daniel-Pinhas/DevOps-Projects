@@ -76,8 +76,8 @@ data:
             <nav>
                 <ul>
                     <li><a href="#dogs">Dogs Gifs</a></li>
-                    <li><a href="#alpacas">Alpacas Gifs</a></li>
-                    <li><a href="#classmates">Classmates Gifs</a></li>
+                    <li><a href="#alpacas">Classmates Gifs</a></li>
+                    <li><a href="#classmates">Alpacas Gifs</a></li>
                 </ul>
             </nav>
         </header>
@@ -88,16 +88,16 @@ data:
             <button onclick="window.location.href='http://192.168.59.103:30100'">Explore Dogs Gifs</button>
         </section>
 
-        <section id="alpacas">
-            <h2>Alpacas Gifs</h2>
-            <p>Click the button below to explore Alpacas Gifs:</p>
-            <button onclick="window.location.href='http://192.168.59.103:30200'">Explore Alpacas Gifs</button>
-        </section>
-
         <section id="classmates">
             <h2>Classmates Gifs</h2>
             <p>Click the button below to explore Classmates Gifs:</p>
-            <button onclick="window.location.href='http://192.168.59.103:30300'">Explore Classmates Gifs</button>
+            <button onclick="window.location.href='http://192.168.59.103:30200'">Explore Classmates Gifs</button>
+        </section>
+
+        <section id="alpacas">
+            <h2>Alpacas Gifs</h2>
+            <p>Click the button below to explore Alpacas Gifs:</p>
+            <button onclick="window.location.href='http://192.168.59.103:30300'">Explore Alpacas Gifs</button>
         </section>
 
         <footer>
