@@ -13,13 +13,13 @@ data:
     -- Use the database
     USE devopsroles;
 
-    -- Create the table
-    CREATE TABLE test_table (
+    -- Create the dogs table
+    CREATE TABLE dogs (
       url VARCHAR(200)
     );
 
-    -- Insert data into the table
-    INSERT INTO test_table(url)
+    -- Insert data into the dogs table
+    INSERT INTO dogs(url)
     VALUES
       ('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbXkwempocWhwbHd0MnRreWk1azgwN2VsMHVoZ2NzM3FhODFzc2M2NyZlcD1'),
       ('https://media1.giphy.com/media/RQSuZfuylVNAY/200w.webp?cid=ecf05e47n4cdqaz5msne59cx3fvz6c5y9sg13y19tehfwwck&e'),
@@ -30,8 +30,41 @@ data:
       ('https://media3.giphy.com/media/x9q0Y6F0BGoTBoqxuV/giphy.webp?cid=ecf05e47rpgbqex2pq000crgh2m76g5jxrqhko46tos5'),
       ('https://media0.giphy.com/media/Ssq1XEzD0D6SI/giphy.webp?cid=ecf05e474etxjps0ok99zsj263u0aq6f8ymogvqwou0l5wsr&');
 
+    -- Create the classmate table
+    CREATE TABLE classmate (
+      url VARCHAR(200)
+    );
 
-      
+    -- Insert data into the classmate table
+    INSERT INTO classmate(url)
+    VALUES
+      ('https://media.giphy.com/media/vrnYuI1HKdsuBclHDi/giphy.gif'),
+      ('https://media.giphy.com/media/cEIXBq4KZvDAXcGkFm/giphy.gif'),
+      ('https://media.giphy.com/media/MPKHdFu7gfjTwvINI8/giphy.gif'),
+      ('https://media.giphy.com/media/Zht0YJiDh8HdNTI517/giphy.gif'),
+      ('https://media.giphy.com/media/mXKcRUVWeAzh6eChjt/giphy.gif'),
+      ('https://media.giphy.com/media/LRSyWuR30TGFTR2Dnt/giphy.gif'),
+      ('https://media.giphy.com/media/WQEbRqcbm8rRCII7LK/giphy.gif'),
+      ('https://media.giphy.com/media/jCngkVhyu5YM3IyVit/giphy.gif'),
+      ('https://media.giphy.com/media/nyou1jZ4zNFsunlRaP/giphy.gif'),
+      ('https://media.giphy.com/media/Z8kzcczaMydalVIRaJ/giphy.gif'),
+      ('https://media.giphy.com/media/OjywjRbCLz4G9Yzn1w/giphy.gif'),
+      ('https://media.giphy.com/media/dknQXUZt6HmNm3A90h/giphy.gif'),
+      ('https://media.giphy.com/media/P4kgnbNpGB1pkRKwhb/giphy.gif');
+
+    -- Create the alpacas table
+    CREATE TABLE alpacas (
+      url VARCHAR(200)
+    );
+
+    -- Insert data into the alpacas table
+    INSERT INTO alpacas(url)
+    VALUES
+      ('https://media2.giphy.com/media/l2ZE9PByrRCTH421a/giphy.gif?cid=ecf05e47xrsiddg6sks641511z42uf5ceffb8a7la76g3dlc&ep=v1_gifs_search&rid=giphy.gif&ct=g'),
+      ('https://media3.giphy.com/media/pORes5MHGkISs/giphy.webp?cid=ecf05e47wsjk1vqa3ol5jo56j3rwjwnkipxn0dlznyi564qp&ep=v1_gifs_search&rid=giphy.webp&ct=g'),
+      ('https://media3.giphy.com/media/l1LcarqI07FguYQa4/200w.webp?cid=ecf05e476sqtpka01ptrag00vuq3i82kjt1husj8p6zl6hs6&ep=v1_gifs_search&rid=200w.webp&ct=g'),
+      ('https://media2.giphy.com/media/edTOtOArMY3KCPOTWG/giphy.webp?cid=ecf05e476sqtpka01ptrag00vuq3i82kjt1husj8p6zl6hs6&ep=v1_gifs_search&rid=giphy.webp&ct=g'),
+      ('https://media1.giphy.com/media/2dfeESNWo3qowjp9GG/200w.webp?cid=ecf05e47yfsxzep5tg2qzpla1g1fa5aajaniccphv3rht027&ep=v1_gifs_search&rid=200w.webp&ct=g');
 ---
 
 apiVersion: v1
