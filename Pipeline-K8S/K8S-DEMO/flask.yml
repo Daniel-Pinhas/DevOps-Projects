@@ -21,20 +21,11 @@ spec:
         - containerPort: 5000
         env:
         - name: USER_NAME
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql-user
+          value: daniel
         - name: USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: mysql-password
+          value: daniel
         - name: DB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: mysql-config
-              key: mysql-url
+          value: "mysql-service:3306"
 
 ---
 
