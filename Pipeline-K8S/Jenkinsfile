@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build and Push Flask-1 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-k8s/Flask-Project/') {
+                dir('DevOps-Projects/Pipeline-K8S/Flask-Project/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -32,7 +32,7 @@ pipeline {
 
         stage('Build and Push Flask-2 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-k8s/Flask-Project2/') {
+                dir('DevOps-Projects/Pipeline-K8S/Flask-Project2/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -44,7 +44,7 @@ pipeline {
 
         stage('Build and Push Flask-3 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-k8s/Flask-Project3/') {
+                dir('DevOps-Projects/Pipeline-K8S/Flask-Project3/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -56,7 +56,7 @@ pipeline {
 
         stage('Deploy Application into Rancher Desktop') {
             steps {                
-                dir('DevOps-Projects/Pipeline-k8s/K8S-YAML/') {
+                dir('DevOps-Projects/Pipeline-K8S/K8S-YAML/') {
                     sh '''
                     kubectl delete deployment --all
                     kubectl delete service --all
@@ -72,7 +72,7 @@ pipeline {
     
         stage('Testing Test-Server') {
             steps {
-                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
+                dir('DevOps-Projects/Pipeline-K8S/tests/') {
                 sh 'bash test.sh'
 
                 }
