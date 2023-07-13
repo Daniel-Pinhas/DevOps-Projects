@@ -7,6 +7,7 @@ pipeline {
         flask2 = 'flask2-k8s'
         flask3 = 'flask3-k8s'
         dockerHubUsername = 'danielpinhas'
+        IPtest = '172.21.251.200'
     }
 
     stages {
