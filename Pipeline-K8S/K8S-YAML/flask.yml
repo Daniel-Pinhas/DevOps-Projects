@@ -20,6 +20,12 @@ spec:
           ports:
             - containerPort: 5000
           env:
+            - name: MYSQL_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: MYSQL_PORT
+              value: "31000"
             - name: USER_NAME
               value: daniel
             - name: USER_PWD
@@ -37,7 +43,7 @@ metadata:
   labels:
     app: flask
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: flask-2
@@ -69,7 +75,7 @@ metadata:
   labels:
     app: flask
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: flask-3
