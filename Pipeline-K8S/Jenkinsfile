@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         // Initialize the initial version tag
-        repositoryName = 'flask-compose'
+        flask1 = 'flask-k8s'
+        flask2 = 'flask2-k8s'
+        flask3 = 'flask3-k8s'
         dockerHubUsername = 'danielpinhas'
-        IPtest = '18.191.235.67'
-        IPprod = '18.118.9.148'
     }
 
     stages {
@@ -18,55 +18,55 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Image') {
+        stage('Build and Push Flask-1 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-Docker-Compose/Flask-Project/') {
+                dir('DevOps-Projects/Pipeline-k8s/Flask-Project/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
                     '''
                 }
-                echo 'Build and Push Docker Image Stage Completed'
+                echo 'Build and Push Flask-1 Image Stage Completed'
             }
         }
 
-
-        stage('Copy Pipeline to Test-EC2') {
+        stage('Build and Push Flask-2 Image') {
             steps {
-                 sshagent(credentials: ['SSH-Agent']) {
-                    sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPtest}:~
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPtest}:~
-                """
+                dir('DevOps-Projects/Pipeline-k8s/Flask-Project2/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
                 }
-                echo 'Copy Pipeline to Test-EC2 Stage Completed'
+                echo 'Build and Push Flask-2 Image Stage Completed'
+            }
+        }
+
+        stage('Build and Push Flask-3 Image') {
+            steps {
+                dir('DevOps-Projects/Pipeline-k8s/Flask-Project3/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
+                }
+                echo 'Build and Push Flask-3 Image Stage Completed'
             }
         }       
 
-        stage('Deploy Docker into EC2 Test-Servers') {
+        stage('Deploy Application into Rancher Desktop') {
             steps {                
-                script {
-                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPtest}"
-                    sh """
-                        ${sshCommand} sudo yum update -y
-                        ${sshCommand} sudo yum install docker -y
-                        ${sshCommand} sudo service docker start
-                        ${sshCommand} sudo systemctl start docker
-                        ${sshCommand} sudo usermod -aG docker ec2-user
-                        if ! ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN >/dev/null; then
-                            ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-                            ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
-                        else
-                            echo "Port 5000 is already in use."
-                        fi
-                        ${sshCommand} docker pull danielpinhas/flask-compose
-                        if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
-                        else
-                            ${sshCommand} sudo docker-compose up -d
-                        fi
-                    """
+                dir('DevOps-Projects/Pipeline-k8s/K8S-YAML/') {
+                    sh '''
+                    kubectl delete deployment --all
+                    kubectl delete service --all
+                    kubectl apply -f mysql.yml
+                    kubectl apply -f flask.yml
+                    kubectl apply -f html-configmap.yml
+                    kubectl apply -f httpd-deployment.yml
+                    '''
                 }
+                echo 'Deploy Application into Rancher Desktop Completed'
             }
         }
     
@@ -74,57 +74,10 @@ pipeline {
             steps {
                 dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
                 sh 'bash test.sh'
-            }
-        }
-    }
 
-        stage('Copy Pipeline to Prod-EC2') {
-            steps {
-                 sshagent(credentials: ['SSH-Agent']) {
-                    sh """
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/docker-compose.yml ec2-user@${IPprod}:~
-                        scp -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/key.pem -r /var/lib/jenkins/workspace/Pipeline-Docker-Compose/DevOps-Projects/Pipeline-Docker-Compose/db ec2-user@${IPprod}:~
-                    """
-                }
-                echo 'Copy Pipeline to Prod-EC2 Stage Completed'
-            }
-        }
-
-
-
-        stage('Deploy Docker into EC2 Prod-Servers') {
-            steps {
-                script {
-                    def sshCommand = "ssh -i /var/lib/jenkins/.ssh/key.pem -o StrictHostKeyChecking=no ec2-user@${IPprod}"
-                    sh """
-                        ${sshCommand} sudo yum update -y
-                        ${sshCommand} sudo yum install docker -y
-                        ${sshCommand} sudo service docker start
-                        ${sshCommand} sudo systemctl start docker
-                        ${sshCommand} sudo usermod -aG docker ec2-user
-                        if ! ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN >/dev/null; then
-                            ${sshCommand} sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-\$(uname -s)-\$(uname -m)" -o /usr/local/bin/docker-compose
-                            ${sshCommand} sudo chmod +x /usr/local/bin/docker-compose
-                        else
-                            echo "Port 5000 is already in use."
-                        fi
-                        ${sshCommand} docker pull danielpinhas/flask-compose
-                        if ${sshCommand} sudo lsof -Pi :5000 -sTCP:LISTEN -t >/dev/null; then
-                            ${sshCommand} sudo docker-compose down && ${sshCommand} sudo docker-compose up -d 
-                        else
-                            ${sshCommand} sudo docker-compose up -d 
-                        fi
-                    """
-                }
-            }
-        }
-
-        stage('Testing Prod-Server') {
-            steps {
-                dir('DevOps-Projects/Pipeline-Docker-Compose/tests/') {
-                sh 'bash prod.sh'
                 }
             }
         }
     }
 }
+
