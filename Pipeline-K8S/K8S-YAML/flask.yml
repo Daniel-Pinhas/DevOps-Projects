@@ -8,24 +8,18 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-1
+      app: flask-2
   template:
     metadata:
       labels:
-        app: flask-1
+        app: flask-2
     spec:
       containers:
-        - name: flask
+        - name: flask2
           image: danielpinhas/flask-k8s
           ports:
             - containerPort: 5000
           env:
-            - name: MYSQL_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: MYSQL_PORT
-              value: "31000"
             - name: USER_NAME
               value: daniel
             - name: USER_PWD
@@ -46,24 +40,18 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-1
+      app: flask-2
   template:
     metadata:
       labels:
-        app: flask-1
+        app: flask-2
     spec:
       containers:
-        - name: flask
+        - name: flask2
           image: danielpinhas/flask2-k8s
           ports:
             - containerPort: 5000
           env:
-            - name: MYSQL_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: MYSQL_PORT
-              value: "31000"
             - name: USER_NAME
               value: daniel
             - name: USER_PWD
@@ -84,24 +72,18 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-1
+      app: flask-3
   template:
     metadata:
       labels:
-        app: flask-1
+        app: flask-3
     spec:
       containers:
-        - name: flask
+        - name: flask3
           image: danielpinhas/flask3-k8s
           ports:
             - containerPort: 5000
           env:
-            - name: MYSQL_HOST
-              valueFrom:
-                fieldRef:
-                  fieldPath: status.hostIP
-            - name: MYSQL_PORT
-              value: "31000"
             - name: USER_NAME
               value: daniel
             - name: USER_PWD
