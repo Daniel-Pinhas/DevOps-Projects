@@ -75,9 +75,9 @@ data:
             <h1>Welcome to Daniel Gifs Website</h1>
             <nav>
                 <ul>
-                    <li><a href="30100">Dogs Gifs</a></li>
-                    <li><a href="30200">Classmates Gifs</a></li>
-                    <li><a href="30300">Alpacas Gifs</a></li>
+                    <li><a href="#dogs">Dogs Gifs</a></li>
+                    <li><a href="#alpacas">Classmates Gifs</a></li>
+                    <li><a href="#classmates">Alpacas Gifs</a></li>
                 </ul>
             </nav>
         </header>
