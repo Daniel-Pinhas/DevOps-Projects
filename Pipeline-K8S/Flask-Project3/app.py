@@ -10,7 +10,7 @@ def get_random_url() -> str:
     config = {
         'user': 'root',
         'password': 'daniel',
-        'host': '172.21.251.200',
+        'host': '172.21.251.200 ',
         'port': '31000',
         'database': 'devopsroles'
     }
