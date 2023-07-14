@@ -8,14 +8,14 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-2
+      app: flask-1
   template:
     metadata:
       labels:
-        app: flask-2
+        app: flask-1
     spec:
       containers:
-        - name: flask2
+        - name: flask1
           image: danielpinhas/flask-k8s
           ports:
             - containerPort: 5000
