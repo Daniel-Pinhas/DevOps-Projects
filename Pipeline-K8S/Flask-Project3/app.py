@@ -10,8 +10,8 @@ def get_random_url() -> str:
     config = {
         'user': 'root',
         'password': 'daniel',
-        'host': '172.21.251.200 ',
-        'port': '31000',
+        'host': os.environ.get("MYSQL_HOST"),
+        'port': os.environ.get("MYSQL_PORT"),
         'database': 'devopsroles'
     }
     connection = mysql.connector.connect(**config)
@@ -31,5 +31,4 @@ def index():
     return render_template("index.html", url=url)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-    
+    app.run(host="0.0.0.0", port=int(os.environ.get("FLASK_PORT", 5000)))
