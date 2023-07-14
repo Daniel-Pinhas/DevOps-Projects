@@ -16,7 +16,7 @@ def get_random_url() -> str:
     }
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor()
-    cursor.execute('SELECT url FROM alpacas')
+    cursor.execute('SELECT url FROM dogs')
     urls = cursor.fetchall()
     cursor.close()
     connection.close()
