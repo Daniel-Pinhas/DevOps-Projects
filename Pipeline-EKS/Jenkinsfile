@@ -75,6 +75,10 @@ pipeline {
             steps {
                 dir('DevOps-Projects/Pipeline-K8S/tests/') {
                 sh 'bash test.sh'
+                sh 'sudo apt update'
+                sh 'sudo apt-get install mysql-server'
+                sh 'sudo systemctl enable mysql'
+                sh 'sudo systemctl start mysql'
 
                 }
             }
