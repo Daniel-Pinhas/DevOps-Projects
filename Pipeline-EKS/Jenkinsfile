@@ -3,10 +3,6 @@ pipeline {
 
     environment {
         // Initialize the initial version tag
-        flask1 = 'flask-k8s'
-        flask2 = 'flask2-k8s'
-        flask3 = 'flask3-k8s'
-        dockerHubUsername = 'danielpinhas'
         IPtest = '172.21.251.200'
     }
 
@@ -61,7 +57,6 @@ pipeline {
                     sh '''
                     kubectl delete deployment --all
                     kubectl delete service --all
-                    kubectl apply -f mysql.yml
                     kubectl apply -f flask.yml
                     kubectl apply -f html-configmap.yml
                     kubectl apply -f httpd-deployment.yml
@@ -75,11 +70,6 @@ pipeline {
             steps {
                 dir('DevOps-Projects/Pipeline-K8S/tests/') {
                 sh 'bash test.sh'
-                sh 'sudo apt update'
-                sh 'sudo apt-get install mysql-server'
-                sh 'sudo systemctl enable mysql'
-                sh 'sudo systemctl start mysql'
-
                 }
             }
         }
