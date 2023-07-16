@@ -1,4 +1,3 @@
-from typing import List, Dict
 from flask import Flask, render_template
 import os
 import random
@@ -7,23 +6,25 @@ import mysql.connector
 app = Flask(__name__)
 
 def get_random_url() -> str:
-    config = {
-        'user': 'root',
-        'password': 'daniel',
-        'host': '172.21.251.200',
-        'port': '31000',
-        'database': 'devopsroles'
-    }
-    connection = mysql.connector.connect(**config)
-    cursor = connection.cursor()
-    cursor.execute('SELECT url FROM classmates')
-    urls = cursor.fetchall()
-    cursor.close()
-    connection.close()
-    if urls:
-        return random.choice(urls)[0]
+    try:
+        config = {
+            'user': 'daniel',
+            'password': 'daniel',
+            'host': 'rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com',
+            'port': '3306',
+            'database': 'devopsroles'
+        }
+        connection = mysql.connector.connect(**config)
+        cursor = connection.cursor()
+        cursor.execute('SELECT url FROM classmates')
+        urls = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        if urls:
+            return random.choice(urls)[0]
+    except mysql.connector.Error as error:
+        print("Error connecting to MySQL database:", error)
     return None
-
 
 @app.route("/")
 def index():
@@ -32,4 +33,3 @@ def index():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-    
