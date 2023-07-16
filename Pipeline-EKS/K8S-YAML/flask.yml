@@ -25,9 +25,8 @@ spec:
             - name: USER_PWD
               value: daniel
             - name: DB_URL
-              value: "mysql-service:3306"
-            - name: MYSQL_ROOT_PASSWORD
-              value: daniel
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
+
 
 ---
 apiVersion: apps/v1
@@ -57,9 +56,8 @@ spec:
             - name: USER_PWD
               value: daniel
             - name: DB_URL
-              value: "mysql-service:3306"
-            - name: MYSQL_ROOT_PASSWORD
-              value: daniel
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
+
 
 ---
 apiVersion: apps/v1
@@ -89,9 +87,8 @@ spec:
             - name: USER_PWD
               value: daniel
             - name: DB_URL
-              value: "mysql-service:3306"
-            - name: MYSQL_ROOT_PASSWORD
-              value: daniel
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
+
 
 ---
 apiVersion: v1
