@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: flask1
-          image: danielpinhas/flask-k8s
+          image: danielpinhas/flask-k8s-with-boto3
           ports:
             - containerPort: 5000
           env:
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: flask2
-          image: danielpinhas/flask2-k8s
+          image: danielpinhas/flask2-k8s-with-boto3
           ports:
             - containerPort: 5000
           env:
@@ -90,7 +90,7 @@ spec:
     spec:
       containers:
         - name: flask3
-          image: danielpinhas/flask3-k8s
+          image: danielpinhas/flask3-k8s-with-boto3
           ports:
             - containerPort: 5000
           env:
