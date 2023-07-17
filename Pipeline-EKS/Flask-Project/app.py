@@ -35,7 +35,7 @@ def get_random_url() -> str:
         db_username = secret_dict["username"]
         db_password = secret_dict["password"]
         db_host = 'rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com'
-        db_port = 3306
+        db_port = '3306'
         db_name = 'devopsroles'
 
         config = {
