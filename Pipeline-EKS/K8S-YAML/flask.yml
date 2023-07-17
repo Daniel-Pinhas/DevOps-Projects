@@ -21,15 +21,9 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: username
+              value: daniel
             - name: USER_PWD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: password
+              value: daniel
             - name: DB_URL
               value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
@@ -58,15 +52,9 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: username
+              value: daniel
             - name: USER_PWD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: password
+              value: daniel
             - name: DB_URL
               value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
@@ -95,15 +83,9 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: username
+              value: daniel
             - name: USER_PWD
-              valueFrom:
-                secretKeyRef:
-                  name: mysql-gifs-secret
-                  key: password
+              value: daniel
             - name: DB_URL
               value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
