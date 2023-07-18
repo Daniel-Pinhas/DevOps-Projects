@@ -34,6 +34,7 @@ app = Flask(__name__)
 
 def get_random_url() -> str:
     try:
+        # Load the database credentials from the secret
         secret = get_secret()
         db_credentials = json.loads(secret)
 
@@ -44,17 +45,24 @@ def get_random_url() -> str:
             'port': '3306',
             'database': 'devopsroles'
         }
-        
+
+        # Establish a connection to the MySQL database
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
+
+        # Execute the query to retrieve URLs from the database
         cursor.execute('SELECT url FROM dogs')
         urls = cursor.fetchall()
+
         cursor.close()
         connection.close()
+
+        # If URLs are found in the database, return a random URL
         if urls:
             return random.choice(urls)[0]
     except mysql.connector.Error as error:
         print("Error connecting to MySQL database:", error)
+
     return None
 
 @app.route("/")
