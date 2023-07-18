@@ -45,7 +45,7 @@ spec:
         - name: flask2
           image: danielpinhas/flask2-k8s
           ports:
-            - containerPort: 5000
+            - containerPort: 5001
           envFrom:
             - secretRef:
                 name: aws-credentials  # Name of the Kubernetes Secret containing the AWS credentials
@@ -73,7 +73,7 @@ spec:
         - name: flask3
           image: danielpinhas/flask3-k8s
           ports:
-            - containerPort: 5000
+            - containerPort: 5002
           envFrom:
             - secretRef:
                 name: aws-credentials  # Name of the Kubernetes Secret containing the AWS credentials
@@ -106,7 +106,7 @@ spec:
   ports:
     - protocol: TCP
       port: 5000
-      targetPort: 5000
+      targetPort: 5001
       nodePort: 30200
       
 ---
@@ -121,5 +121,5 @@ spec:
   ports:
     - protocol: TCP
       port: 5000
-      targetPort: 5000
+      targetPort: 5002
       nodePort: 30300
