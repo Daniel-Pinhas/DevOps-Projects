@@ -57,7 +57,6 @@ pipeline {
                     sh '''
                     kubectl delete deployment --all
                     kubectl delete service --all
-                    kubectl create secret generic aws-credentials --from-env-file=/var/lib/jenkins/.ssh/awsCred.env
                     kubectl apply -f flask.yml
                     kubectl apply -f html-configmap.yml
                     kubectl apply -f httpd-deployment.yml
