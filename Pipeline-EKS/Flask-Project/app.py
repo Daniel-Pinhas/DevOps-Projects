@@ -6,8 +6,18 @@ import boto3
 import json
 from botocore.exceptions import ClientError
 
+# Use this code snippet in your app.
+# If you need more information about configurations
+# or implementing the sample code, visit the AWS docs:
+# https://aws.amazon.com/developer/language/python/
+
+import boto3
+from botocore.exceptions import ClientError
+
+
 def get_secret():
-    secret_name = "MySQL-Gifs-Secret"
+
+    secret_name = "rds!db-21228c7a-606c-4199-bc8d-263051769145"
     region_name = "us-east-2"
 
     # Create a Secrets Manager client
