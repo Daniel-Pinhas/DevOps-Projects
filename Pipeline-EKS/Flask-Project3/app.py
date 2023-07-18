@@ -7,8 +7,7 @@ import json
 from botocore.exceptions import ClientError
 
 def get_secret():
-    # Update the secret_name with the new secret's name
-    secret_name = "rds!db-21228c7a-606c-4199-bc8d-263051769145"
+    secret_name = "MySQL-Gifs-Secret"
     region_name = "us-east-2"
 
     # Create a Secrets Manager client
@@ -32,7 +31,6 @@ def get_secret():
     return secret
 
 app = Flask(__name__)
-
 
 def get_random_url() -> str:
     try:
