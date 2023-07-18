@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 def get_secret():
 
-    secret_name = "rds!db-21228c7a-606c-4199-bc8d-263051769145"
+    secret_name = "mysql-gifs-rds"
     region_name = "us-east-2"
 
     # Create a Secrets Manager client
