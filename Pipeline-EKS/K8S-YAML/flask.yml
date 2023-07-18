@@ -19,18 +19,9 @@ spec:
           image: danielpinhas/flask-k8s
           ports:
             - containerPort: 5000
-          env:
-            - name: USER_NAME
-              value: "username" # Replace "username" with the key used for the MySQL username in your secret
-            - name: USER_PWD
-              value: "password" # Replace "password" with the key used for the MySQL password in your secret
-            - name: DB_URL
-              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
-            - name: AWS_REGION
-              value: "us-east-2" # Replace with the AWS region where your secret is stored
-            - name: SECRET_NAME
-              value: "MySQL-Gifs-Secret" # Replace with the name of your secret in AWS Secrets Manager
-
+          envFrom:
+            - secretRef:
+                name: aws-credentials  # Name of the Kubernetes Secret containing the AWS credentials
 
 
 ---
