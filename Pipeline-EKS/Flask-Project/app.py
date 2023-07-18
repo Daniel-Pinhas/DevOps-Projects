@@ -3,6 +3,7 @@ import os
 import random
 import mysql.connector
 import boto3
+import json
 from botocore.exceptions import ClientError
 
 def get_secret():
