@@ -9,6 +9,9 @@ COPY requirements.txt .
 
 # Install the Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Install the boto3 module
+RUN pip install boto3
 RUN pip install mysql-connector-python
 
 # Copy the rest of the application code to the container
