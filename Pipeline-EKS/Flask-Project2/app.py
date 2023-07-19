@@ -1,8 +1,8 @@
 from flask import Flask, render_template
 import os
 import random
-import mysql.connector
 import boto3
+import mysql.connector
 import json
 from botocore.exceptions import ClientError
 
