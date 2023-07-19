@@ -19,9 +19,13 @@ spec:
           image: danielpinhas/flask-k8s
           ports:
             - containerPort: 5000
-          envFrom:
-            - secretRef:
-                name: aws-credentials  
+          env:
+            - name: USER_NAME
+              value: daniel2
+            - name: USER_PWD
+              value: daniel2
+            - name: DB_URL
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
 
 ---
@@ -46,10 +50,13 @@ spec:
           image: danielpinhas/flask2-k8s
           ports:
             - containerPort: 5000
-          envFrom:
-            - secretRef:
-                name: aws-credentials  
-
+          env:
+            - name: USER_NAME
+              value: daniel2
+            - name: USER_PWD
+              value: daniel2
+            - name: DB_URL
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
 
 ---
@@ -74,9 +81,13 @@ spec:
           image: danielpinhas/flask3-k8s
           ports:
             - containerPort: 5000
-          envFrom:
-            - secretRef:
-                name: aws-credentials  
+          env:
+            - name: USER_NAME
+              value: daniel2
+            - name: USER_PWD
+              value: daniel2
+            - name: DB_URL
+              value: "rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com"
 
 
 ---
