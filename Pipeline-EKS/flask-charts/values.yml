@@ -1,0 +1,22 @@
+# values.yaml
+user_name: daniel2
+user_pwd: daniel2
+db_url: rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com
+
+flask1:
+  image:
+    repository: danielpinhas/flask-k8s
+    tag: "1.0"  # Customize the image tag for Flask1
+  nodePort: 30100
+
+flask2:
+  image:
+    repository: danielpinhas/flask2-k8s
+    tag: "1.1"  # Customize the image tag for Flask2
+  nodePort: 30200
+
+flask3:
+  image:
+    repository: danielpinhas/flask3-k8s
+    tag: "1.2"  # Customize the image tag for Flask3
+  nodePort: 30300

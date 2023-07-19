@@ -1,0 +1,90 @@
+# templates/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-flask-deployment-1
+  labels:
+    app: flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-1
+  template:
+    metadata:
+      labels:
+        app: flask-1
+    spec:
+      containers:
+        - name: flask1
+          image: {{ .Values.flask1.image.repository }}:{{ .Values.flask1.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              value: {{ .Values.user_name }}
+            - name: USER_PWD
+              value: {{ .Values.user_pwd }}
+            - name: DB_URL
+              value: {{ .Values.db_url }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-flask-deployment-2
+  labels:
+    app: flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-2
+  template:
+    metadata:
+      labels:
+        app: flask-2
+    spec:
+      containers:
+        - name: flask2
+          image: {{ .Values.flask2.image.repository }}:{{ .Values.flask2.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              value: {{ .Values.user_name }}
+            - name: USER_PWD
+              value: {{ .Values.user_pwd }}
+            - name: DB_URL
+              value: {{ .Values.db_url }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-flask-deployment-3
+  labels:
+    app: flask
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask-3
+  template:
+    metadata:
+      labels:
+        app: flask-3
+    spec:
+      containers:
+        - name: flask3
+          image: {{ .Values.flask3.image.repository }}:{{ .Values.flask3.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              value: {{ .Values.user_name }}
+            - name: USER_PWD
+              value: {{ .Values.user_pwd }}
+            - name: DB_URL
+              value: {{ .Values.db_url }}

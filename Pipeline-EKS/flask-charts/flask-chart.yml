@@ -1,0 +1,7 @@
+# my-flask-chart.yaml
+apiVersion: v2
+name: flask-chart
+description: A Helm Chart for deploying Flask applications
+type: application
+version: 0.1.0
+appVersion: 1.0
