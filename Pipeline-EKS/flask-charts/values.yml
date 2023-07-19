@@ -1,6 +1,6 @@
 # values.yaml
-user_name: daniel2
-user_pwd: daniel2
+user_name: 
+user_pwd: 
 db_url: rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com
 
 flask1:
