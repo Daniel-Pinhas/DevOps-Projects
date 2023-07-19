@@ -7,8 +7,6 @@ import json
 import logging
 from botocore.exceptions import ClientError
 
-logging.basicConfig(level=logging.DEBUG)
-
 def get_secret():
 
     secret_name = "mysql-gifs-rds"
