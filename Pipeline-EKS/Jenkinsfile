@@ -55,6 +55,9 @@ pipeline {
             steps {                
                 dir('DevOps-Projects/Pipeline-EKS/K8S-YAML/') {
                     sh '''
+                    kubectl apply -f flask.yml
+                    kubectl apply -f html-configmap.yml
+                    kubectl apply -f httpd-deployment.yml
                     kubectl rollout restart deploy flask-deployment-1
                     kubectl rollout restart deploy flask-deployment-2
                     kubectl rollout restart deploy flask-deployment-3
