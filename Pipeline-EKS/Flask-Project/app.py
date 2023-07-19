@@ -4,10 +4,9 @@ import random
 import mysql.connector
 import boto3
 import json
-from botocore.exceptions import ClientError
 import logging
+from botocore.exceptions import ClientError
 
-# Add this before app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 def get_secret():
@@ -34,6 +33,7 @@ def get_secret():
     # Decrypts secret using the associated KMS key.
     secret = get_secret_value_response['SecretString']
     return secret
+
 logging.basicConfig(level=logging.DEBUG)
 app = Flask(__name__)
 

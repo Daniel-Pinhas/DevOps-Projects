@@ -7,7 +7,8 @@ import json
 from botocore.exceptions import ClientError
 
 def get_secret():
-    secret_name = "MySQL-Gifs-Secret"
+
+    secret_name = "mysql-gifs-rds"
     region_name = "us-east-2"
 
     # Create a Secrets Manager client
