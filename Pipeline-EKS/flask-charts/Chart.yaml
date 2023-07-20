@@ -1,4 +1,3 @@
-# my-flask-chart.yaml
 apiVersion: v2
 name: flask-chart
 description: A Helm Chart for deploying Flask applications
