@@ -1,14 +1,13 @@
-# templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service-{{ .Values.app_suffix }}
+  name: flask-service-{{ .Release.Name }}
 spec:
   type: NodePort
   selector:
-    app: flask-{{ .Values.app_suffix }}
+    app: flask-{{ .Release.Name }}
   ports:
     - protocol: TCP
       port: 5000
       targetPort: 5000
-      nodePort: {{ index .Values (printf "node_port_flask%s" .Values.app_suffix) }}
+      nodePort: {{ index .Values (printf "node_port_flask%s" .Release.Name) }}

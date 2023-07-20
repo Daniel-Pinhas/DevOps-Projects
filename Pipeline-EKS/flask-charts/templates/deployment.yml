@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-flask-deployment-1
   labels:
-    app: flask
+    app: flask-1
 spec:
   replicas: 2
   selector:
@@ -39,7 +39,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-flask-deployment-2
   labels:
-    app: flask
+    app: flask-2
 spec:
   replicas: 2
   selector:
@@ -75,7 +75,7 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-flask-deployment-3
   labels:
-    app: flask
+    app: flask-3
 spec:
   replicas: 2
   selector:

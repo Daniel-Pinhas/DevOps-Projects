@@ -58,7 +58,7 @@ pipeline {
                     kubectl delete deployment --all
                     kubectl delete service --all
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
-                    kubectl apply -f flask.yml
+                    helm upgrade --install flask-app . --values values.yml
                     kubectl apply -f html-configmap.yml
                     kubectl apply -f httpd-deployment.yml
                     '''
