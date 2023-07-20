@@ -1,5 +1,3 @@
-# templates/deployment.yaml
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,9 +21,15 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              value: {{ .Values.user_name }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
             - name: USER_PWD
-              value: {{ .Values.user_pwd }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
             - name: DB_URL
               value: {{ .Values.db_url }}
 
@@ -53,9 +57,15 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              value: {{ .Values.user_name }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
             - name: USER_PWD
-              value: {{ .Values.user_pwd }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
             - name: DB_URL
               value: {{ .Values.db_url }}
 
@@ -83,8 +93,14 @@ spec:
             - containerPort: 5000
           env:
             - name: USER_NAME
-              value: {{ .Values.user_name }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
             - name: USER_PWD
-              value: {{ .Values.user_pwd }}
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
             - name: DB_URL
               value: {{ .Values.db_url }}
