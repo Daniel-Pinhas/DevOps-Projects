@@ -60,7 +60,7 @@ pipeline {
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f html-configmap.yml
                     kubectl apply -f httpd-deployment.yml
-                    cd DevOps-Projects/Pipeline-EKS/flask-charts && helm upgrade --install flask-app . --values values.yml
+                    cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
