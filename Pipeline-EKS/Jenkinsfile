@@ -57,7 +57,7 @@ pipeline {
                     sh '''
                     kubectl delete deployment --all
                     kubectl delete service --all
-                    kubectl apply -f /var/lib/jenkins/.ssh/rds.tml
+                    kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f flask.yml
                     kubectl apply -f html-configmap.yml
                     kubectl apply -f httpd-deployment.yml
