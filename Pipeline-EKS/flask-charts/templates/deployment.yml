@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-flask-deployment-1
+  name: flask-deployment-1
   labels:
-    app: flask-1
+    app: flask1
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-1
+      app: flask1
   template:
     metadata:
       labels:
-        app: flask-1
+        app: flask1
     spec:
       containers:
         - name: flask1
@@ -37,18 +37,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-flask-deployment-2
+  name: flask-deployment-2
   labels:
-    app: flask-2
+    app: flask2
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-2
+      app: flask2
   template:
     metadata:
       labels:
-        app: flask-2
+        app: flask2
     spec:
       containers:
         - name: flask2
@@ -73,18 +73,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-flask-deployment-3
+  name: flask-deployment-3
   labels:
-    app: flask-3
+    app: flask3
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: flask-3
+      app: flask3
   template:
     metadata:
       labels:
-        app: flask-3
+        app: flask3
     spec:
       containers:
         - name: flask3
