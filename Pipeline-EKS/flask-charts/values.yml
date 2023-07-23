@@ -26,5 +26,5 @@ flask2:
 flask3:
   image:
     repository: danielpinhas/flask3-k8s
-    tag: "{{ .Values.flask3.tag | default "latest" }}"  # Fix the tag reference here
+    tag: "{{ .Values.flask3.tag | default "latest" }}"  
   nodePort: 30300
