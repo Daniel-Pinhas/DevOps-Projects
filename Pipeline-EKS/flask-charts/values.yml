@@ -14,17 +14,17 @@ db_url: rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com
 flask1:
   image:
     repository: danielpinhas/flask-k8s
-    tag: "{{ .Values.flask1.tag | default "latest" }}"
+    tag: "latest"
   nodePort: 30100
 
 flask2:
   image:
     repository: danielpinhas/flask2-k8s
-    tag: "{{ .Values.flask2.tag | default "latest" }}"
+    tag: "latest"
   nodePort: 30200
 
 flask3:
   image:
     repository: danielpinhas/flask3-k8s
-    tag: "{{ .Values.flask3.tag | default "latest" }}"  
+    tag: "latest" 
   nodePort: 30300
