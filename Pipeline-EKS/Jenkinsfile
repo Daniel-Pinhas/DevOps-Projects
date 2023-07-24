@@ -57,8 +57,7 @@ pipeline {
                     sh '''
                     kubectl config use-context rancher-desktop  
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
-                    kubectl apply -f html-configmap.yml
-                    kubectl apply -f httpd-deployment.yml
+                    kubectl apply -f Test-httpd-deploy.yml
                     cd ../flask-charts && python3 changeTagValues.py
                     cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
                     '''
@@ -81,8 +80,7 @@ pipeline {
                 dir('DevOps-Projects/Pipeline-EKS/K8S-YAML/') {
                     sh '''
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website
-                    kubectl apply -f html-configmap.yml
-                    kubectl apply -f httpd-deployment.yml
+                    kubectl apply -f Prod-httpd-deploy.yml
                     cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
                     '''
                 }
@@ -90,10 +88,10 @@ pipeline {
             }   
         }
 
-        stage('Testing Test-Server') {
+        stage('Testing Prod-Server') {
             steps {
                 dir('DevOps-Projects/Pipeline-K8S/tests/') {
-                sh 'bash test.sh'
+                sh 'bash prod.sh'
                 }
             }
         }
