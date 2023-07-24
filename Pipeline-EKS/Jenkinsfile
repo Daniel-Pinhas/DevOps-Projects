@@ -45,6 +45,7 @@ pipeline {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
+                    cd ../flask-charts && python3 changeTagValues.py
                     '''
                 }
                 echo 'Build and Push Flask-3 Image Stage Completed'
@@ -58,7 +59,6 @@ pipeline {
                     kubectl config use-context rancher-desktop  
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f Test-httpd-deploy.yml
-                    cd ../flask-charts && python3 changeTagValues.py
                     cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
                     '''
                 }
