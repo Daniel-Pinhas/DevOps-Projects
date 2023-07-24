@@ -1,23 +1,29 @@
 import yaml
-import requests
-from bs4 import BeautifulSoup
+import docker
 
-def get_latest_tag(repository):
-    url = f"https://hub.docker.com/repository/docker/{repository}/general"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    tag_elements = soup.select(".Repository__tag a span")
-    if tag_elements:
-        return tag_elements[0].text
-    return None
+def get_local_latest_tag(repository):
+    client = docker.from_env()
+    try:
+        image = client.images.get(repository)
+        return image.tags[0] if image.tags else None
+    except docker.errors.ImageNotFound:
+        return None
+
+def extract_number_from_tag(tag):
+    # This function will extract the number from the tag using string manipulation.
+    # You can modify this function according to the format of your tags.
+    # For example, if your tags are in the format "2.0" or "v2.0", this function will extract "2.0".
+    return tag.split(":")[-1]
 
 def update_values_file(values_file, tags):
     with open(values_file, "r") as file:
         data = yaml.safe_load(file)
 
-    data["flask1"]["image"]["tag"] = tags.get("flask1", "latest")
-    data["flask2"]["image"]["tag"] = tags.get("flask2", "latest")
-    data["flask3"]["image"]["tag"] = tags.get("flask3", "latest")
+    for service in data:
+        if service.startswith("flask"):
+            repo_tag = tags.get(service, "latest")
+            tag_number = extract_number_from_tag(repo_tag)
+            data[service]["image"]["tag"] = tag_number
 
     with open(values_file, "w") as file:
         yaml.dump(data, file)
@@ -31,7 +37,7 @@ def main():
 
     latest_tags = {}
     for service, repository in repositories.items():
-        latest_tag = get_latest_tag(repository)
+        latest_tag = get_local_latest_tag(repository)
         if latest_tag:
             latest_tags[service] = latest_tag
 
