@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: httpd-deployment
+  name: test-httpd-deployment
 spec:
   replicas: 1
   selector:
@@ -29,11 +29,10 @@ spec:
                 path: index.html
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: httpd-service
+  name: test-httpd-service
 spec:
   type: NodePort
   selector:
