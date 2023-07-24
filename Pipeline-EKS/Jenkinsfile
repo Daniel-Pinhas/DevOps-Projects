@@ -82,7 +82,7 @@ pipeline {
                     sh '''
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website
                     kubectl apply -f Prod-httpd-deployment.yml
-                    cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
+                    kubectl apply -f flask.yml
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
