@@ -4,6 +4,7 @@ pipeline {
     environment {
         // Initialize the initial version tag
         IPtest = '172.31.240.22'
+        IPprod = '172.31.240.22'
     }
 
     stages {

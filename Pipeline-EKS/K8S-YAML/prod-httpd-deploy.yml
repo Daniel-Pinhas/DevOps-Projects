@@ -1,4 +1,4 @@
-apiVersion: v2
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prod-html-configmap
@@ -107,7 +107,7 @@ data:
     </html>
 ---
 
-apiVersion: apps/v2
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prod-httpd-deployment
@@ -132,13 +132,13 @@ spec:
       volumes:
         - name: html-volume
           configMap:
-            name: html-configmap
+            name: prod-html-configmap
             items:
               - key: index.html
                 path: index.html
 
 ---
-apiVersion: v2
+apiVersion: v1
 kind: Service
 metadata:
   name: prod-httpd-service
