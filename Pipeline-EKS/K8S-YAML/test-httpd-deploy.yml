@@ -132,7 +132,7 @@ spec:
       volumes:
         - name: html-volume
           configMap:
-            name: html-configmap
+            name: test-html-configmap
             items:
               - key: index.html
                 path: index.html
