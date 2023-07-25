@@ -1,5 +1,5 @@
 apiVersion: v2
-name: flask-chart
+name: flask-chart-test
 description: A Helm Chart for deploying Flask applications
 type: application
 version: 0.1.0
