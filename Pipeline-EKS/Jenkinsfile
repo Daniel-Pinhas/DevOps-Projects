@@ -58,12 +58,13 @@ pipeline {
 
         stage('Deploy to Test Env: Rancher Desktop') {
             steps {                
-                dir('DevOps-Projects/Pipeline-EKS/K8S-YAML/') {
+                dir('DevOps-Projects/Pipeline-EKS/flask-charts-test/') {
                     sh '''
-                    kubectl config use-context rancher-desktop  
+                    kubectl config use-context rancher-desktop 
+                    python3 changeTagTest.py 
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
-                    kubectl apply -f Test-httpd-deployment.yml
-                    cd ../flask-charts && helm upgrade --install flask-app . --values values.yml
+                    kubectl apply -f httpd-deploy-test.yml
+                    helm upgrade --install flask-app-test . --values values.yml
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
@@ -81,11 +82,13 @@ pipeline {
 
         stage('Deploy to Production Env: GCP Cluster') {
             steps {                
-                dir('DevOps-Projects/Pipeline-EKS/K8S-YAML/') {
+                dir('DevOps-Projects/Pipeline-EKS/flask-charts-prod/') {
                     sh '''
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
-                    kubectl apply -f Prod-httpd-deployment.yml
-                    kubectl apply -f flask-prod.yml
+                    python3 changeTagTest.py
+                    kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
+                    kubectl apply -f httpd-deploy-prod.yml
+                    helm upgrade --install flask-app-prod . --values values.yml
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'

@@ -19,14 +19,14 @@ spec:
               service:
                 name: flask-service-2
                 port:
-                  number: 81
+                  number: 80
           - path: /flask3
             pathType: Prefix
             backend:
               service:
                 name: flask-service-3
                 port:
-                  number: 82
+                  number: 80
 ---
 apiVersion: v1
 kind: Service
