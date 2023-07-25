@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment-1
+  labels:
+    app: flask1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask1
+  template:
+    metadata:
+      labels:
+        app: flask1
+    spec:
+      containers:
+        - name: flask1
+          image: {{ .Values.flask1.image.repository }}:{{ .Values.flask1.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
+            - name: DB_URL
+              value: {{ .Values.db_url }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment-2
+  labels:
+    app: flask2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask2
+  template:
+    metadata:
+      labels:
+        app: flask2
+    spec:
+      containers:
+        - name: flask2
+          image: {{ .Values.flask2.image.repository }}:{{ .Values.flask2.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
+            - name: DB_URL
+              value: {{ .Values.db_url }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-deployment-3
+  labels:
+    app: flask3
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flask3
+  template:
+    metadata:
+      labels:
+        app: flask3
+    spec:
+      containers:
+        - name: flask3
+          image: {{ .Values.flask3.image.repository }}:{{ .Values.flask3.image.tag }}
+          ports:
+            - containerPort: 5000
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_name
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: rds-secrets
+                  key: user_pwd
+            - name: DB_URL
+              value: {{ .Values.db_url }}
