@@ -1,0 +1,30 @@
+user_name: 
+  valueFrom:
+    secretKeyRef:
+      name: rds-secrets
+      key: user_name
+user_pwd: 
+  valueFrom:
+    secretKeyRef:
+      name: rds-secrets
+      key: user_pwd
+
+db_url: rds-gifs-db.cih3afqd7fge.us-east-2.rds.amazonaws.com
+
+flask1:
+  image:
+    repository: danielpinhas/flask-k8s
+    tag: "latest"
+
+
+flask2:
+  image:
+    repository: danielpinhas/flask2-k8s
+    tag: "latest"
+
+
+flask3:
+  image:
+    repository: danielpinhas/flask3-k8s
+    tag: "latest" 
+
