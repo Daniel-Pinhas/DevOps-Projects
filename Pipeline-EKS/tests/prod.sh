@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define the Flask application URL
-FLASK_URL="http://${IPprod}:32000"
+FLASK_URL="http://${IPprod}"
 sleep 10
 # Make a GET request to the Flask application
-response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPprod}:32000")
+response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPprod}")
 
 # Check the HTTP response code
 if [ "$response" == "200" ]; then
@@ -14,10 +14,10 @@ else
     exit 1
 fi
 
-FLASK_URL="http://${IPprod}:30100"
+FLASK_URL="http://${IPflask1}:5000"
 sleep 10
 # Make a GET request to the Flask application
-response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPprod}:30100")
+response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPflask1}:5000")
 
 # Check the HTTP response code
 if [ "$response" == "200" ]; then
@@ -27,10 +27,10 @@ else
     exit 1
 fi
 
-FLASK_URL="http://${IPprod}:30200"
+FLASK_URL="http://${IPflask2}:5000"
 sleep 10
 # Make a GET request to the Flask application
-response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPprod}:30200")
+response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPflask2}:5000")
 
 # Check the HTTP response code
 if [ "$response" == "200" ]; then
@@ -40,10 +40,10 @@ else
     exit 1
 fi
 
-FLASK_URL="http://${IPprod}:30300"
+FLASK_URL="http://${IPflask3}:5000"
 sleep 10
 # Make a GET request to the Flask application
-response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPprod}:30300")
+response=$(curl -s -o /dev/null -w "%{http_code}" "http://${IPflask3}:5000")
 
 # Check the HTTP response code
 if [ "$response" == "200" ]; then

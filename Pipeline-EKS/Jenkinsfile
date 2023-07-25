@@ -4,7 +4,10 @@ pipeline {
     environment {
         // Initialize the initial version tag
         IPtest = '172.31.240.22'
-        IPprod = '172.31.240.22'
+        IPprod = '34.30.120.228'
+        IPflask1 = '35.225.50.134'
+        IPflask2 = '34.133.96.221'
+        IPflask3 = '34.69.138.178'
     }
 
     stages {
