@@ -84,7 +84,7 @@ pipeline {
                 dir('DevOps-Projects/Pipeline-EKS/flask-charts-prod/') {
                     sh '''
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
-                    python3 changeTagTest.py
+                    python3 changeTagProd.py
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f httpd-deploy-prod.yml
                     helm upgrade --install flask-app-prod . --values values.yml
