@@ -1,5 +1,5 @@
 apiVersion: v2
-name: flask-chart-prod
+name: flask-charts-prod
 description: A Helm Chart for deploying Flask applications
 type: application
 version: 0.1.0
