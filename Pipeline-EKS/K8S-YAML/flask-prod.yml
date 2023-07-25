@@ -4,7 +4,7 @@ metadata:
   name: flask-deployment-1
   labels:
     app: flask
-spec:
+spec: 
   replicas: 2
   selector:
     matchLabels:
