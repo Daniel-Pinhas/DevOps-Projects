@@ -1,44 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flask-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /flask1
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-service-1
+                port:
+                  number: 80
+          - path: /flask2
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-service-2
+                port:
+                  number: 81
+          - path: /flask3
+            pathType: Prefix
+            backend:
+              service:
+                name: flask-service-3
+                port:
+                  number: 82
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service-flask1
+  name: flask-service-1
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: flask1
+    app: flask-1
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-      nodePort: {{ .Values.flask1.nodePort }}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service-flask2
+  name: flask-service-2
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: flask2
+    app: flask-2
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-      nodePort: {{ .Values.flask2.nodePort }}
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: flask-service-flask3
+  name: flask-service-3
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
-    app: flask3
+    app: flask-3
   ports:
     - protocol: TCP
       port: 80
       targetPort: 5000
-      nodePort: {{ .Values.flask3.nodePort }}
