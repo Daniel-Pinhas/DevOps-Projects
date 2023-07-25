@@ -80,9 +80,9 @@ pipeline {
             steps {                
                 dir('DevOps-Projects/Pipeline-EKS/K8S-YAML/') {
                     sh '''
-                    kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website
+                    kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
                     kubectl apply -f Prod-httpd-deployment.yml
-                    kubectl apply -f flask.yml
+                    kubectl apply -f flask-prod.yml
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
