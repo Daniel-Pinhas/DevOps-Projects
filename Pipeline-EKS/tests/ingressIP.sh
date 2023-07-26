@@ -3,13 +3,16 @@
 # Get the Ingress IPs
 ingress_ips=($(kubectl describe service | grep Ingress | awk '{print $3}'))
 
-# Define the placeholders and their corresponding Ingress IPs
-placeholders=("IPflask1" "IPflask2" "IPflask3" "IPprod")
-replace_ips=("${ingress_ips[0]}" "${ingress_ips[1]}" "${ingress_ips[2]}" "${ingress_ips[3]}")
+# Define the Flask application URLs with placeholders
+IPflask1='http://FLASK_IP_PLACEHOLDER_1:5000'
+IPflask2='http://FLASK_IP_PLACEHOLDER_2:5000'
+IPflask3='http://FLASK_IP_PLACEHOLDER_3:5000'
+IPprod='http://FLASK_IP_PLACEHOLDER_PROD'
 
-# Iterate over the placeholders and replace them with the corresponding Ingress IPs
-for ((i = 0; i < ${#placeholders[@]}; i++)); do
-    sed -i "s/${placeholders[i]} = '.*/${placeholders[i]} = '${replace_ips[i]}'/" prod.sh
-done
+# Replace the placeholders with the corresponding Ingress IPs
+sed -i "s|http://FLASK_IP_PLACEHOLDER_1:5000|${ingress_ips[0]}:5000|g" prod.sh
+sed -i "s|http://FLASK_IP_PLACEHOLDER_2:5000|${ingress_ips[1]}:5000|g" prod.sh
+sed -i "s|http://FLASK_IP_PLACEHOLDER_3:5000|${ingress_ips[2]}:5000|g" prod.sh
+sed -i "s|http://FLASK_IP_PLACEHOLDER_PROD|${ingress_ips[3]}:5000|g" prod.sh
 
-echo "prod.sh updated successfully."
+echo "Flask application URLs updated successfully."
