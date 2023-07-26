@@ -87,7 +87,7 @@ pipeline {
                     bash changeTagflask.sh
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f flask-prod.yml
-                    sleep 10
+                    sleep 30
                     bash updateHTML.sh
                     kubectl apply -f httpd-deploy-prod.yml
                     cd .. && bash ingressIP.sh
