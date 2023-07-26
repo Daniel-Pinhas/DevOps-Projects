@@ -86,6 +86,7 @@ pipeline {
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
                     bash changeTagflask.sh
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
+                    kubectl apply -f service-html.yml
                     kubectl apply -f flask-prod.yml
                     sleep 30
                     bash updateHTML.sh
