@@ -88,9 +88,9 @@ pipeline {
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f flask-prod.yml
                     sleep 10
-                    bash ../ingressIP.sh
+                    bash updateHTML.sh
                     kubectl apply -f httpd-deploy-prod.yml
-                    
+                    cd .. && bash ingressIP.sh
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
