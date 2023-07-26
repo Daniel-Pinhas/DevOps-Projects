@@ -4,10 +4,6 @@ pipeline {
     environment {
         // Initialize the initial version tag
         IPtest = '172.31.240.22'
-        IPflask1 = ''
-        IPflask2 = ''
-        IPflask3 = ''
-        IPprod = ''
     }
     
     stages {
