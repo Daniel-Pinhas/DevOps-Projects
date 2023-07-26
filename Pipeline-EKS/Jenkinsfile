@@ -88,7 +88,7 @@ pipeline {
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
                     kubectl apply -f flask-prod.yml
                     sleep 10
-                    cd .. && bash ingressIP.sh
+                    bash ../ingressIP.sh
                     kubectl apply -f httpd-deploy-prod.yml
                     
                     '''
