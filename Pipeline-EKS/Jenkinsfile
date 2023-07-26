@@ -90,8 +90,7 @@ pipeline {
                     kubectl apply -f flask-prod.yml
                     sleep 60
                     bash updateHTML.sh
-                    kubectl apply -f httpd-deploy-prod.yml
-                    cd .. && bash ingressIP.sh
+                    kubectl apply -f httpd-deploy-prod.yml 
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
@@ -101,6 +100,7 @@ pipeline {
         stage('Testing Prod-Server') {
             steps {
                 dir('DevOps-Projects/Pipeline-K8S/tests/') {
+                sh 'bash ingressIP.sh'
                 sh 'bash prod.sh'
                 }
             }
