@@ -85,19 +85,19 @@ data:
         <section id="dogs">
             <h2>Dogs Gifs</h2>
             <p>Click the button below to explore Dogs Gifs:</p>
-            <button onclick="window.location.href='http://${IPflask1}:5000'">Explore Dogs Gifs</button>
+            <button onclick="window.location.href='http://__FLASK_IP_PLACEHOLDER_1__:5000'">Explore Dogs Gifs</button>
         </section>
 
         <section id="classmates">
             <h2>Classmates Gifs</h2>
             <p>Click the button below to explore Classmates Gifs:</p>
-            <button onclick="window.location.href='http://${IPflask2}:5000'">Explore Classmates Gifs</button>
+            <button onclick="window.location.href='http://__FLASK_IP_PLACEHOLDER_2__:5000'">Explore Classmates Gifs</button>
         </section>
 
         <section id="alpacas">
             <h2>Alpacas Gifs</h2>
             <p>Click the button below to explore Alpacas Gifs:</p>
-            <button onclick="window.location.href='http://${IPflask3}:5000'">Explore Alpacas Gifs</button>
+            <button onclick="window.location.href='http://__FLASK_IP_PLACEHOLDER_3__:5000'">Explore Alpacas Gifs</button>
         </section>
 
         <footer>
