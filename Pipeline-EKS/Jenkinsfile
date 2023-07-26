@@ -4,10 +4,6 @@ pipeline {
     environment {
         // Initialize the initial version tag
         IPtest = '172.31.240.22'
-        IPflask1 = ''
-        IPflask2 = ''
-        IPflask3 = ''
-        IPprod = ''
     }
     
     stages {
@@ -91,7 +87,6 @@ pipeline {
                     sleep 60
                     bash updateHTML.sh
                     kubectl apply -f httpd-deploy-prod.yml
-                    cd .. && bash ingressIP.sh
                     '''
                 }
                 echo 'Deploy Application into Rancher Desktop Completed'
@@ -101,6 +96,7 @@ pipeline {
         stage('Testing Prod-Server') {
             steps {
                 dir('DevOps-Projects/Pipeline-EKS/tests/') {
+                sh 'bash ingressIP.sh'
                 sh 'bash prod.sh'
                 }
             }
