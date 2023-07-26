@@ -96,6 +96,7 @@ pipeline {
         stage('Testing Prod-Server') {
             steps {
                 dir('DevOps-Projects/Pipeline-K8S/tests/') {
+                sh 'chmod +x ingressIP.sh'
                 sh 'bash ingressIP.sh'
                 sh 'bash prod.sh'
                 }
