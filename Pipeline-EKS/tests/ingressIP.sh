@@ -13,6 +13,6 @@ IPprod='http://FLASK_IP_PLACEHOLDER_PROD'
 sed -i "s|http://FLASK_IP_PLACEHOLDER_1:5000|${ingress_ips[0]}:5000|g" prod.sh
 sed -i "s|http://FLASK_IP_PLACEHOLDER_2:5000|${ingress_ips[1]}:5000|g" prod.sh
 sed -i "s|http://FLASK_IP_PLACEHOLDER_3:5000|${ingress_ips[2]}:5000|g" prod.sh
-sed -i "s|http://FLASK_IP_PLACEHOLDER_PROD|${ingress_ips[3]}:5000|g" prod.sh
+sed -i "s|http://FLASK_IP_PLACEHOLDER_PROD|${ingress_ips[3]}|g" prod.sh
 
 echo "Flask application URLs updated successfully."
