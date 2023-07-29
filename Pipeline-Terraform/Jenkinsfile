@@ -1,0 +1,106 @@
+pipeline {
+    agent any
+
+    environment {
+        // Initialize the initial version tag
+        IPtest = '172.31.240.22'
+    }
+    
+    stages {
+        stage('Clean Up & Clone') {
+            steps {
+                sh 'sudo rm -rf *'
+                sh 'git clone https://github.com/Daniel-Pinhas/DevOps-Projects.git'
+                echo 'Clean Up & Clone Stage Completed'
+            }
+        }
+
+        stage('Build and Push Flask-1 Image') {
+            steps {
+                dir('DevOps-Projects/Pipeline-EKS/Flask-Project/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
+                }
+                echo 'Build and Push Flask-1 Image Stage Completed'
+            }
+        }
+
+        stage('Build and Push Flask-2 Image') {
+            steps {
+                dir('DevOps-Projects/Pipeline-EKS/Flask-Project2/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
+                }
+                echo 'Build and Push Flask-2 Image Stage Completed'
+            }
+        }
+
+        stage('Build and Push Flask-3 Image') {
+            steps {
+                dir('DevOps-Projects/Pipeline-EKS/Flask-Project3/') {
+                    sh '''
+                    chmod +x manageVersion.py
+                    python3 manageVersion.py
+                    '''
+                }
+                echo 'Build and Push Flask-3 Image Stage Completed'
+            }
+        }       
+
+        stage('Deploy to Test Env: Rancher Desktop') {
+            steps {                
+                dir('DevOps-Projects/Pipeline-EKS/flask-charts-test/') {
+                    sh '''
+                    kubectl config use-context rancher-desktop 
+                    python3 changeTagTest.py 
+                    kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
+                    kubectl apply -f httpd-deploy-test.yml
+                    helm upgrade --install flask-app-test . --values values.yml
+                    '''
+                }
+                echo 'Deploy Application into Rancher Desktop Completed'
+            }
+        }
+    
+        stage('Testing Test-Server') {
+            steps {
+                dir('DevOps-Projects/Pipeline-K8S/tests/') {
+                sh 'bash test.sh'
+                }
+            }
+        }
+
+
+        stage('Deploy to Production Env: GCP Cluster') {
+            steps {                
+                dir('DevOps-Projects/Pipeline-EKS/flask-charts-prod/') {
+                    sh '''
+                    kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
+                    bash changeTagflask.sh
+                    kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
+                    kubectl apply -f service-html.yml
+                    kubectl apply -f flask-prod.yml
+                    sleep 60
+                    bash updateHTML.sh
+                    kubectl apply -f httpd-deploy-prod.yml
+                    '''
+                }
+                echo 'Deploy Application into Rancher Desktop Completed'
+            }   
+        }
+
+        stage('Testing Prod-Server') {
+            steps {
+                dir('DevOps-Projects/Pipeline-EKS/tests/') {
+                sh 'bash ingressIP.sh'
+                sh 'bash prod.sh'
+                }
+            }
+        }
+    }
+}
+
