@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build and Push Flask-1 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-EKS/Flask-Project/') {
+                dir('DevOps-Projects/Pipeline-Terraform/Flask-Project/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Build and Push Flask-2 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-EKS/Flask-Project2/') {
+                dir('DevOps-Projects/Pipeline-Terraform/Flask-Project2/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Build and Push Flask-3 Image') {
             steps {
-                dir('DevOps-Projects/Pipeline-EKS/Flask-Project3/') {
+                dir('DevOps-Projects/Pipeline-Terraform/Flask-Project3/') {
                     sh '''
                     chmod +x manageVersion.py
                     python3 manageVersion.py
@@ -53,8 +53,9 @@ pipeline {
 
         stage('Deploy to Test Env: Rancher Desktop') {
             steps {                
-                dir('DevOps-Projects/Pipeline-EKS/flask-charts-test/') {
+                dir('DevOps-Projects/Pipeline-Terraform/flask-charts-test/') {
                     sh '''
+                    cat abc.txt
                     kubectl config use-context rancher-desktop 
                     python3 changeTagTest.py 
                     kubectl apply -f /var/lib/jenkins/.ssh/rds.yml
@@ -68,7 +69,7 @@ pipeline {
     
         stage('Testing Test-Server') {
             steps {
-                dir('DevOps-Projects/Pipeline-K8S/tests/') {
+                dir('DevOps-Projects/Pipeline-Terraform/tests/') {
                 sh 'bash test.sh'
                 }
             }
@@ -77,7 +78,7 @@ pipeline {
 
         stage('Deploy to Production Env: GCP Cluster') {
             steps {                
-                dir('DevOps-Projects/Pipeline-EKS/flask-charts-prod/') {
+                dir('DevOps-Projects/Pipeline-Terraform/flask-charts-prod/') {
                     sh '''
                     kubectl config use-context gke_lofty-dynamics-393510_us-central1-a_gifs-website-cluster
                     bash changeTagflask.sh
@@ -95,7 +96,7 @@ pipeline {
 
         stage('Testing Prod-Server') {
             steps {
-                dir('DevOps-Projects/Pipeline-EKS/tests/') {
+                dir('DevOps-Projects/Pipeline-Terraform/tests/') {
                 sh 'bash ingressIP.sh'
                 sh 'bash prod.sh'
                 }
