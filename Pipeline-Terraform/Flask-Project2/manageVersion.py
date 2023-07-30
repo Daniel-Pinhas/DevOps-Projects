@@ -1,4 +1,5 @@
 import docker
+import subprocess
 
 client = docker.from_env()
 
