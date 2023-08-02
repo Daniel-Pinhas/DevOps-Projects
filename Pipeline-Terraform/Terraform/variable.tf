@@ -1,9 +1,9 @@
 variable "project_id" {
-  description = "lofty-dynamics-393510"
+  default = "lofty-dynamics-393510"
 }
 variable "cluster_name" {
-  description = "gifs-website-cluster-test"
-  default     = "gke-terraform"
+  description = "The name of the cluster"
+  default     = "gifs-website-cluster-test"
 }
 variable "env_name" {
   description = "The environment for the GKE cluster"
@@ -19,19 +19,19 @@ variable "zones" {
 }
 variable "network" {
   description = "The VPC network created to host the cluster in"
-  default     = "gke-network-test"
+  default     = "gke-network"
 }
 variable "subnetwork" {
   description = "The subnetwork created to host the cluster in"
-  default     = "gke-subnet-test"
+  default     = "gke-subnet"
 }
 variable "ip_range_pods_name" {
   description = "The secondary ip range to use for pods"
-  default     = "ip-range-pods-test"
+  default     = "ip-range-pods"
 }
 variable "ip_range_services_name" {
   description = "The secondary ip range to use for services"
-  default     = "ip-range-services-test"
+  default     = "ip-range-services"
 }
 
 variable "service-account-id" {
@@ -49,7 +49,7 @@ variable "minnode" {
 }
 variable "maxnode" {
   description = "Maximum number of node pool"
-  default     = 2
+  default     = 3
 }
 
 variable "disksize" {
