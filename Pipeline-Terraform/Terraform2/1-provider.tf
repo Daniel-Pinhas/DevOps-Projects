@@ -3,8 +3,8 @@ provider "google" {
   region  = "us-central1"
 }
 
-terraform{
-    backend "gcs"{
+terraform {
+    backend "gcs" {
         bucket = "gifs-website-bucket"
         prefix = "terraform/state"
   }

@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Initialize the initial version tag
-        IPtest = '172.31.240.22'
+        IPtest = '172.29.88.252'
     }
     
     stages {
